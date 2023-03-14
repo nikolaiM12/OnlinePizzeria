@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WebApplication2.Data;
+using OnlinePizzeria.Data;
 
-namespace WebApplication2
+namespace OnlinePizzeria
 {
     public class Program
     {

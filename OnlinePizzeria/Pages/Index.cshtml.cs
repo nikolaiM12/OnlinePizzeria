@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApplication2.Pages
+namespace OnlinePizzeria.Pages
 {
     public class IndexModel : PageModel
     {
@@ -14,7 +14,6 @@ namespace WebApplication2.Pages
 
         public void OnGet()
         {
-
         }
     }
 }

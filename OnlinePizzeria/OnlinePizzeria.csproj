@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-WebApplication2-90308960-af58-4ae2-9bb6-9571eb60327b</UserSecretsId>
+    <RootNamespace>OnlinePizzeria</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

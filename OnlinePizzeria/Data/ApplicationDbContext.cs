@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Model;
+using OnlinePizzeria.Model;
 
-namespace WebApplication2.Data
+namespace OnlinePizzeria.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
