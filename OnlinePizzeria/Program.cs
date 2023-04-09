@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OnlinePizzeria.Controllers;
 using OnlinePizzeria.Data;
+using OnlinePizzeria.Services;
 
 namespace OnlinePizzeria
 {
@@ -18,7 +20,8 @@ namespace OnlinePizzeria
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            builder.Services.AddRazorPages();
+            builder.Services.AddTransient<PizzaModelService, PizzaModelService>();
+            builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
@@ -29,7 +32,7 @@ namespace OnlinePizzeria
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -42,6 +45,9 @@ namespace OnlinePizzeria
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
             app.Run();
