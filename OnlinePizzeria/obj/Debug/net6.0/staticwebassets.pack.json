@@ -13,50 +13,6 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Bolognese.png",
-      "PackagePath": "staticwebassets\\images\\Bolognese.png"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Carbonara.png",
-      "PackagePath": "staticwebassets\\images\\Carbonara.png"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Create.png",
-      "PackagePath": "staticwebassets\\images\\Create.png"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Create.zip",
-      "PackagePath": "staticwebassets\\images\\Create.zip"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Hawaiian.png",
-      "PackagePath": "staticwebassets\\images\\Hawaiian.png"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Margerita.png",
-      "PackagePath": "staticwebassets\\images\\Margerita.png"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\MeatFeast.png",
-      "PackagePath": "staticwebassets\\images\\MeatFeast.png"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Mushroom.png",
-      "PackagePath": "staticwebassets\\images\\Mushroom.png"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Pepperoni.png",
-      "PackagePath": "staticwebassets\\images\\Pepperoni.png"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Seafood.png",
-      "PackagePath": "staticwebassets\\images\\Seafood.png"
-    },
-    {
-      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\images\\Vegetarian.png",
-      "PackagePath": "staticwebassets\\images\\Vegetarian.png"
-    },
-    {
       "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

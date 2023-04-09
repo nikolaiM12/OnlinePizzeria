@@ -1,5 +1,4 @@
-﻿using OnlinePizzeria.Data.DataModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,7 +13,7 @@ namespace OnlinePizzeria.Model
         public string? PizzaModelId { get; set; }
         public string ImageTitle { get; set; }
         public string PizzaName { get; set; }
-        public float BasePrice { get; set; } = 2; 
+        public float BasePrice { get; set; }
         public bool TomatoSauce { get; set; }
         public bool Cheese { get; set; }
         public bool Peperoni { get; set; }
@@ -24,15 +23,5 @@ namespace OnlinePizzeria.Model
         public bool Ham { get; set; }
         public bool Beef { get; set; }
         public float FinalPrice { get; set; }
-        public virtual PizzaSize PizzaSize { get; set; }
-        public PizzaSize.SizeType Size { get; set; }
-        public virtual WeightOption WeightOption { get; set; }
-        public PizzaModel()
-        {
-            this.WeightOption = new WeightOption();
-        }
-        [Required]
-        public ProductWeight ProductWeight { get; set; }    
-        
     }
 }

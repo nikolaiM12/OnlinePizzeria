@@ -10,9 +10,11 @@
     "OnlinePizzeria": {
       "commandName": "Project",
       "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7023;http://localhost:5050",
-      "sqlDebugging": false
+      "applicationUrl": "https://localhost:7023;http://localhost:5050"
     }
   },
   "iisSettings": {

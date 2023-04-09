@@ -17,9 +17,9 @@ namespace OnlinePizzeria.Data
         public DbSet<PizzaModel> Pizza { get; set; }
         public DbSet<Provider> Providers { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+         {
             optionsBuilder.UseSqlServer("Server=LAPTOP-DPN235VU\\SQLEXPRESS;Database=OnlinePizzeriaDB;Trusted_Connection=True;TrustServerCertificate=True;");
-        }
+         }
     }
 }

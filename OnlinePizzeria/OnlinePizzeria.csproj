@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-OnlinePizzeria-90308960-af58-4ae2-9bb6-9571eb60327b</UserSecretsId>
+    <UserSecretsId>aspnet-WebApplication2-90308960-af58-4ae2-9bb6-9571eb60327b</UserSecretsId>
     <RootNamespace>OnlinePizzeria</RootNamespace>
   </PropertyGroup>
 
@@ -14,7 +14,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
   </ItemGroup>
 
 </Project>
