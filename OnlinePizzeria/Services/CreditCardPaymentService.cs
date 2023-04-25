@@ -13,9 +13,9 @@ namespace OnlinePizzeria.Services
         {
             context = post;
         }
-        public async Task<ICollection<CreditCardPaymentViewModel>> GetAll()
+        public List<CreditCardPaymentViewModel> GetAll()
         {
-            return await context.OnlinePayment.Select(payment => new CreditCardPaymentViewModel()
+            return context.OnlinePayment.Select(payment => new CreditCardPaymentViewModel()
             {
                 CardNumber = payment.CardNumber,
                 ExpirationDate = payment.ExpirationDate,
@@ -23,13 +23,13 @@ namespace OnlinePizzeria.Services
                 Amount = payment.Amount,
                 Customer = payment.Customer,
                 Order = payment.Order,
-            }).ToListAsync();
+            }).ToList();
         }
         public async Task CreateAsync(CreditCardPaymentViewModel model)
         {
             CreditCardPayment creditCardPayment = new CreditCardPayment();
 
-            creditCardPayment.CreditCardPaymentId = model.CreditCardPaymentId;
+            creditCardPayment.CreditCardPaymentId = Guid.NewGuid().ToString();
             creditCardPayment.CardNumber = model.CardNumber;
             creditCardPayment.ExpirationDate = model.ExpirationDate;
             creditCardPayment.CVV = model.CVV;
@@ -42,9 +42,17 @@ namespace OnlinePizzeria.Services
         }
         public async Task DeletePayment(string creditCardPaymentId)
         {
-            var onlinepaymentDb = context.OnlinePayment.FirstOrDefault(x => x.CreditCardPaymentId == creditCardPaymentId);
-            context.OnlinePayment.Remove(onlinepaymentDb);
-            await context.SaveChangesAsync();
+            if (string.IsNullOrEmpty(creditCardPaymentId) || string.IsNullOrWhiteSpace(creditCardPaymentId))
+            {
+                Console.WriteLine("Eror!");
+            }
+            if (creditCardPaymentId != null)
+            {
+                var onlinepaymentDb = context.OnlinePayment.FirstOrDefault(x => x.CreditCardPaymentId == creditCardPaymentId);
+                context.OnlinePayment.Remove(onlinepaymentDb);
+                await context.SaveChangesAsync();
+            }
+            
         }
         public CreditCardPaymentViewModel FindById(string creditCardPaymentId)
         {

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.View;
 using OnlinePizzeria.Data;
 using OnlinePizzeria.Model;
+using OnlinePizzeria.Models;
 using OnlinePizzeria.Services;
 using OnlinePizzeria.Services.ViewModels;
 
@@ -14,20 +16,33 @@ namespace OnlinePizzeria.Controllers
         {
             pizzaService = service;
         }
-
         public IActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
-        public IActionResult CustomPizzaIndex()
+        public IActionResult CustomPizza()
         {
             return View();
         }
-        public IActionResult CreditCardIndex(PizzaViewModel pizza, WeightOptionViewModel weight, ProductWeightViewModel product)
+        [HttpPost]
+        public IActionResult OrderIndex(PizzaViewModel pizza, WeightOptionViewModel weight)
         {
-            pizza.FinalPrice = pizzaService.CalculateCustomPizza(pizza, weight, product);
-            return RedirectToAction("~/Views/CreditCardPayment/CreditCardIndex.cshtml", new { pizza.PizzaName, pizza.FinalPrice });
+            pizza.FinalPrice = pizzaService.CalculateCustomPizza(pizza, weight);
+            return RedirectToAction("~/Views/Order/Index.cshtml", new {pizza.PizzaName, pizza.FinalPrice});
         }
+        //[HttpGet]
+        //public IActionResult Details(string id)
+        //{
+        //    PizzaViewModel pizza = pizzaService.GetDetailsById(id);
+
+        //    bool isCourseNull = pizza == null;
+        //    if (isCourseNull)
+        //    {
+        //        return this.RedirectToAction("Index");
+        //    }
+
+        //    return this.View(pizza);
+        //}
     }
 }

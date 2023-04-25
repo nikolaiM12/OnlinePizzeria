@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Options;
-using Microsoft.EntityFrameworkCore;
-using OnlinePizzeria.Data;
+﻿using OnlinePizzeria.Data;
 using OnlinePizzeria.Data.DataModels;
 using OnlinePizzeria.Model;
 using OnlinePizzeria.Services.Interfaces;
 using OnlinePizzeria.Services.ViewModels;
-using System.Drawing;
 
 namespace OnlinePizzeria.Services
 {
@@ -18,9 +13,9 @@ namespace OnlinePizzeria.Services
         {
             context = post;
         }
-        public async Task<ICollection<PizzaViewModel>> GetAll()
+        public List<PizzaViewModel> GetAll()
         {
-            return await context.Pizza.Select(pizza => new PizzaViewModel()
+            return context.Pizza.Select(pizza => new PizzaViewModel()
             {
                 ImageTitle = pizza.ImageTitle,
                 PizzaName = pizza.PizzaName,
@@ -35,9 +30,8 @@ namespace OnlinePizzeria.Services
                 Beef = pizza.Beef,
                 FinalPrice = pizza.FinalPrice,
                 PizzaSize = pizza.PizzaSize,
-                ProductWeight = pizza.ProductWeight,
                 WeightOption = pizza.WeightOption
-            }).ToListAsync();
+            }).ToList();
         }
         public async Task CreateAsync(PizzaViewModel model)
         {
@@ -57,7 +51,6 @@ namespace OnlinePizzeria.Services
             pizzaModel.Beef = model.Beef;
             pizzaModel.FinalPrice = model.FinalPrice;
             pizzaModel.PizzaSize = model.PizzaSize;
-            pizzaModel.ProductWeight = model.ProductWeight;
             pizzaModel.WeightOption = model.WeightOption;
 
             await context.Pizza.AddAsync(pizzaModel);
@@ -89,7 +82,6 @@ namespace OnlinePizzeria.Services
                     Beef = pizza.Beef,
                     FinalPrice = pizza.FinalPrice,
                     PizzaSize = pizza.PizzaSize,
-                    ProductWeight = pizza.ProductWeight,
                     WeightOption = pizza.WeightOption
                 }).SingleOrDefault(pizza => pizza.PizzaModelId == pizzaModelId);
             return pizza;
@@ -102,24 +94,23 @@ namespace OnlinePizzeria.Services
             {
                 return;
             }
-              pizzaModel.ImageTitle = model.ImageTitle;
-              pizzaModel.PizzaName = model.PizzaName;
-              pizzaModel.BasePrice = model.BasePrice;
-              pizzaModel.TomatoSauce = model.TomatoSauce;
-              pizzaModel.Cheese = model.Cheese;
-              pizzaModel.Peperoni = model.Peperoni;
-              pizzaModel.Mushroom = model.Mushroom;
-              pizzaModel.Tuna = model.Tuna;
-              pizzaModel.Pineapple = model.Pineapple;
-              pizzaModel.Ham = model.Ham;
-              pizzaModel.Beef = model.Beef;
-              pizzaModel.FinalPrice = model.FinalPrice;
-              pizzaModel.PizzaSize = model.PizzaSize;
-              pizzaModel.ProductWeight = model.ProductWeight;
-              pizzaModel.WeightOption = model.WeightOption;
-              
-              context.Pizza.Update(pizzaModel);
-              await context.SaveChangesAsync();
+            pizzaModel.ImageTitle = model.ImageTitle;
+            pizzaModel.PizzaName = model.PizzaName;
+            pizzaModel.BasePrice = model.BasePrice;
+            pizzaModel.TomatoSauce = model.TomatoSauce;
+            pizzaModel.Cheese = model.Cheese;
+            pizzaModel.Peperoni = model.Peperoni;
+            pizzaModel.Mushroom = model.Mushroom;
+            pizzaModel.Tuna = model.Tuna;
+            pizzaModel.Pineapple = model.Pineapple;
+            pizzaModel.Ham = model.Ham;
+            pizzaModel.Beef = model.Beef;
+            pizzaModel.FinalPrice = model.FinalPrice;
+            pizzaModel.PizzaSize = model.PizzaSize;
+            pizzaModel.WeightOption = model.WeightOption;
+
+            context.Pizza.Update(pizzaModel);
+            await context.SaveChangesAsync();
         }
         public PizzaViewModel UpdateById(string pizzaModelId)
         {
@@ -140,79 +131,76 @@ namespace OnlinePizzeria.Services
                     Beef = pizza.Beef,
                     FinalPrice = pizza.FinalPrice,
                     PizzaSize = pizza.PizzaSize,
-                    ProductWeight = pizza.ProductWeight,
                     WeightOption = pizza.WeightOption
                 }).SingleOrDefault(pizza => pizza.PizzaModelId == pizzaModelId);
-            return pizza; 
+            return pizza;
         }
-        public float CalculateCustomPizza(PizzaViewModel pizza, WeightOptionViewModel weight, ProductWeightViewModel product)
+        public float CalculateCustomPizza(PizzaViewModel pizza, WeightOptionViewModel weight)
         {
             pizza.FinalPrice = pizza.BasePrice;
 
             if (pizza.TomatoSauce)
             {
-                pizza.BasePrice += 1f;
+                pizza.FinalPrice += 1f;
             }
             if (pizza.Cheese)
             {
-                pizza.BasePrice += 1f;
+                pizza.FinalPrice += 1f;
             }
             if (pizza.Peperoni)
             {
-                pizza.BasePrice += 1.5f;
+                pizza.FinalPrice += 1.5f;
             }
             if (pizza.Mushroom)
             {
-                pizza.BasePrice += 1f;
+                pizza.FinalPrice += 1f;
             }
             if (pizza.Tuna)
             {
-                pizza.BasePrice += 1.5f;
+                pizza.FinalPrice += 1.5f;
             }
             if (pizza.Pineapple)
             {
-                pizza.BasePrice += 3f;
+                pizza.FinalPrice += 3f;
             }
             if (pizza.Ham)
             {
-                pizza.BasePrice += 2.5f;
+                pizza.FinalPrice += 2.5f;
             }
             if (pizza.Beef)
             {
-                pizza.BasePrice += 2.5f;
-            }
-            
-            switch (pizza.WeightOption.Option)
-            {
-               case WeightOption.Choice.None:
-                   return pizza.BasePrice + 0f;
-               case WeightOption.Choice.ExtraLight:
-                   return pizza.BasePrice + 0.5f;
-               case WeightOption.Choice.Light:
-                   return pizza.BasePrice + 0.75f;
-               case WeightOption.Choice.Normal:
-                   return pizza.BasePrice + 1.25f;
-               case WeightOption.Choice.Heavy:
-                   return pizza.BasePrice + 1.50f;
-               case WeightOption.Choice.ExtraHeavy:
-                   return pizza.BasePrice + 2f;
-               default:
-                   break;
+                pizza.FinalPrice += 2.5f;
             }
             switch (pizza.PizzaSize.Size)
             {
                 case PizzaSize.SizeType.Small:
-                    return pizza.BasePrice + 1f;
+                    return pizza.FinalPrice + 1f;
                 case PizzaSize.SizeType.Medium:
-                    return pizza.BasePrice + 1.5f;
+                    return pizza.FinalPrice + 1.5f;
                 case PizzaSize.SizeType.Large:
-                    return pizza.BasePrice + 2.0f;
-                default:
-                    break;
+                    return pizza.FinalPrice + 2.0f;
             }
-            return pizza.FinalPrice;
+
+            switch(pizza.WeightOption.Products)
+            {
+                case WeightOption.Product.TomatoWeight:
+                    return pizza.FinalPrice;
+                case WeightOption.Product.HamWeight:
+                    return pizza.FinalPrice + 0.25f;
+                case WeightOption.Product.BeefWeight:
+                    return pizza.FinalPrice + 0.5f;
+                case WeightOption.Product.CheeseWeight:
+                    return pizza.FinalPrice + 0.75f;
+                case WeightOption.Product.MushroomWeight:
+                    return pizza.FinalPrice + 1f;
+                case WeightOption.Product.TunaWeight:
+                    return pizza.FinalPrice + 2f;
+            }
+            return pizza.FinalPrice; 
 
         }
 
     }
 }
+
+

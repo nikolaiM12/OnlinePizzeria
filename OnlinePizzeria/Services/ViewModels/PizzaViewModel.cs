@@ -1,4 +1,5 @@
 ﻿using OnlinePizzeria.Data.DataModels;
+using OnlinePizzeria.Model;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlinePizzeria.Services.ViewModels
@@ -19,14 +20,8 @@ namespace OnlinePizzeria.Services.ViewModels
         public bool Beef { get; set; }
         public float FinalPrice { get; set; }
         public virtual PizzaSize PizzaSize { get; set; }
-        public PizzaSize.SizeType Size { get; set; }
         public virtual WeightOption WeightOption { get; set; }
-        public PizzaViewModel()
-        {
-            this.WeightOption = new WeightOption();
-        }
-        [Required] 
-        public ProductWeight ProductWeight { get; set; }
+        
     }
 }
 

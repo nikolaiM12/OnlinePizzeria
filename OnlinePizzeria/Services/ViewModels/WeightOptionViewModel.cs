@@ -1,4 +1,6 @@
-﻿namespace OnlinePizzeria.Services.ViewModels
+﻿using OnlinePizzeria.Model;
+
+namespace OnlinePizzeria.Services.ViewModels
 {
     public class WeightOptionViewModel
     {
@@ -14,5 +16,17 @@
             ExtraHeavy
         }
         public Choice Option { get; set; }
+        public enum Product
+        {
+            TomatoWeight,
+            CheeseWeight,
+            PeperoniWeight,
+            MushroomWeight,
+            TunaWeight,
+            PineappleWeight,
+            HamWeight,
+            BeefWeight
+        }
+        public Product Products { get; set; }
     }
 }

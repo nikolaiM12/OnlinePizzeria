@@ -4,7 +4,7 @@ namespace OnlinePizzeria.Services.Interfaces
 {
     public interface ICreditCardPaymentService
     {
-        Task <ICollection<CreditCardPaymentViewModel>> GetAll();
+        List<CreditCardPaymentViewModel> GetAll();
         Task CreateAsync(CreditCardPaymentViewModel model);
         Task DeletePayment(string customerId);
         CreditCardPaymentViewModel FindById(string creditCardPaymentId);

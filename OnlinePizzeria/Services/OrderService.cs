@@ -13,9 +13,9 @@ namespace OnlinePizzeria.Services
         {
             context = post;
         }
-        public async Task<ICollection<OrderViewModel>> GetAll()
+        public List<OrderViewModel> GetAll()
         {
-            return await context.Orders.Select(order => new OrderViewModel()
+            return context.Orders.Select(order => new OrderViewModel()
             {
                 OrderDate = order.OrderDate,
                 Customer = order.Customer,
@@ -25,7 +25,7 @@ namespace OnlinePizzeria.Services
                 Address = order.Address,
                 City = order.City,
                 IsDelivered = order.IsDelivered
-            }).ToListAsync();
+            }).ToList();
         }
         public async Task AddOrder(OrderViewModel order)
         {

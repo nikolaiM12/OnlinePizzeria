@@ -1,0 +1,118 @@
+﻿@model IEnumerable<CreditCardPaymentViewModel>
+@using OnlinePizzeria.Data.DataModels
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Credit Card Payment Index</title>
+			<style>
+				body {
+					font-family: Arial, sans-serif;
+				}
+
+				h1 {
+					margin-top: 20px;
+					text-align: center;
+				}
+
+				table {
+					border-collapse: collapse;
+					margin: auto;
+				}
+
+				table th, table td {
+					padding: 10px;
+					border: 1px solid #ddd;
+					text-align: center;
+				}
+
+				table th {
+					background-color: #f2f2f2;
+				}
+
+				form {
+					max-width: 500px;
+					margin: 20px auto;
+					padding: 20px;
+					border: 1px solid #ddd;
+					border-radius: 5px;
+					box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+				}
+
+				form label {
+					display: block;
+					margin-bottom: 5px;
+				}
+
+				form input[type="text"] {
+					width: 100%;
+					padding: 10px;
+					border: 1px solid #ccc;
+					border-radius: 5px;
+					margin-bottom: 20px;
+				}
+
+				form input[type="submit"] {
+					background-color: #4CAF50;
+					color: white;
+					border: none;
+					padding: 10px 20px;
+					text-align: center;
+					text-decoration: none;
+					display: inline-block;
+					font-size: 16px;
+					border-radius: 5px;
+					cursor: pointer;
+				}
+
+					form input[type="submit"]:hover {
+						background-color: #3e8e41;
+					}
+		</style>
+	</head>
+	<body>
+		<h1>Credit Card Payment Index</h1>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Credit Card Payment Id</th>
+					<th>Card Number</th>
+					<th>Expiration Date</th>
+					<th>CVV</th>
+					<th>Amount</th>
+					<th>Customer Name</th>
+					<th>Order Id</th>
+					<th colspan="7">
+						<a class="btn btn-primary" asp-area="" asp-controller="CreditCardPayment" asp-action="AddPayment">Add Payment</a>
+					</th>
+					<th colspan="7">
+						<a class="btn btn-primary" asp-area="" asp-controller="CreditCardPayment" asp-action="DeletePayment">Delete Payment</a>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+			@if (Model != null && Model.Any())
+			{
+				@foreach (var payment in Model)
+				{
+					<tr>
+						<td>@payment.CreditCardPaymentId</td>
+						<td>@payment.CardNumber</td>
+						<td>@payment.ExpirationDate</td>
+						<td>@payment.CVV</td>
+						<td>@payment.Amount</td>
+						<td>@(
+						payment.Customer.FirstName + " " + payment.Customer.LastName
+						)</td>
+						<td>@payment.Order.OrderId</td>
+					</tr>
+				}
+			}
+			</tbody>
+	   </table>
+	</body>
+</html>
+
+

@@ -11,7 +11,11 @@ namespace OnlinePizzeria.Model
     {
         [Key]
         public string? CustomerId { get; set; }
+        [Required(ErrorMessage = "First Name is required")]
+        [StringLength(50, ErrorMessage = "First name can't be longer than 50 characters")]
         public string FirstName { get; set; }
+        [Required(ErrorMessage = "Last Name is required")]
+        [StringLength(50, ErrorMessage = "Last name can't be longer than 50 characters")]
         public string LastName { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }

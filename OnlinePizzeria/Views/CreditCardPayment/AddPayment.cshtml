@@ -1,0 +1,58 @@
+﻿@model CreditCardPaymentViewModel
+
+<form method="post" asp-action="AddPayment">
+    <div class="container">
+        <div class="col-md-12 col-lg-12">
+            <article class="post vt-post">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
+                        <div class="caption">
+                            <p><label asp-for="CardNumber">Card Number:</label></p>
+                                <input asp-for="CardNumber" class="form-control" pattern="^(?:(?<visa>4[0-9]{3}-?[0-9]{4}-?[0-9]{4}-?[0-9]{4}(?:-?[0-9]{3})?)|
+                                (?<mastercard>5[1-5][0-9]{14}))$" required placeholder="Еnter a credit card number...">
+                            <br />
+
+                            <p><label asp-for="CVV">CVV:</label></p>
+                                <input asp-for="CVV" class="form-control" pattern="^[0-9]{3,4}$" required>
+                            <br />
+
+                            <p><label asp-for="ExpirationDate">Expiration Date:</label></p>
+                                <input asp-for="ExpirationDate" class="form-control" pattern="^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$" required>
+                            <br />
+
+                            <p><label asp-for="Amount">Amount:</label></p>
+                                <input asp-for="Amount" class="form-control" min="0.01" required>
+                            <br />
+
+                            <p><label asp-for="Customer.FirstName">First Name:</label></p>
+                                <input asp-for="Customer.FirstName" class="form-control"/>
+                            <span asp-validation-for="Customer.FirstName"></span>
+                            <br />
+
+                            <p><label asp-for="Customer.LastName">Last Name:</label></p>
+                                <input asp-for="Customer.LastName" class="form-control" />
+                                <span asp-validation-for="Customer.LastName"></span>
+                            <br />
+
+                            <p><label asp-for=Order.OrderId>Order Id:</label></p>
+                                <input asp-for="Order.OrderId" class="form-control" />
+                                <span asp-validation-for="Order.OrderId"></span>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-10 offset-2 row">
+            <div class="col">
+                <input type="submit" class="btn btn-info w-55" value="Add" />
+            </div>
+            <div class="col">
+                <a asp-action="Index" class="btn btn-danger w-74">Back</a>
+            </div>
+        </div>
+    </div>
+</form>

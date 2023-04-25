@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using OnlinePizzeria.Controllers;
 using OnlinePizzeria.Data;
@@ -21,6 +23,10 @@ namespace OnlinePizzeria
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddTransient<PizzaModelService, PizzaModelService>();
+            builder.Services.AddTransient<OrderService, OrderService>();
+            builder.Services.AddTransient<CreditCardPaymentService, CreditCardPaymentService>();
+            builder.Services.AddTransient<ProviderService, ProviderService>();
+            builder.Services.AddTransient<CustomerService, CustomerService>();
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();

@@ -1,7 +1,6 @@
 ﻿@model PizzaViewModel
 @using OnlinePizzeria.Data.DataModels;
-@{
-}
+
 <!DOCTYPE html>
 <html>
    <head>
@@ -62,8 +61,8 @@
                                     </div>
                                     <h2>Ingredient Weights:</h2>
                                     <div class="form-group">
-                                    <label asp-for="ProductWeight.TomatoWeight">Tomato Weight:</label>
-                                    <select asp-for="ProductWeight.TomatoWeight" class="form-control">
+                                    <label asp-for="WeightOption.Products">Tomato Weight:</label>
+                                    <select asp-for="WeightOption.Products" class="form-control">
                                         <option value="@WeightOption.Choice.None">None</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Light</option>
                                         <option value="@WeightOption.Choice.Light">Light</option>
@@ -71,8 +70,8 @@
                                         <option value="@WeightOption.Choice.Heavy">Heavy</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Heavy</option>
                                     </select>
-                                    <label asp-for="ProductWeight.CheeseWeight">Cheese Weight:</label>
-                                    <select asp-for="ProductWeight.CheeseWeight" class="form-control">
+                                    <label asp-for="WeightOption.Products">Cheese Weight:</label>
+                                    <select asp-for="WeightOption.Products" class="form-control">
                                         <option value="@WeightOption.Choice.None">None</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Light</option>
                                         <option value="@WeightOption.Choice.Light">Light</option>
@@ -80,8 +79,8 @@
                                         <option value="@WeightOption.Choice.Heavy">Heavy</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Heavy</option>
                                     </select>
-                                    <label asp-for="ProductWeight.PeperoniWeight">Peperoni Weight:</label>
-                                    <select asp-for="ProductWeight.PeperoniWeight" class="form-control">
+                                    <label asp-for="WeightOption.Products">Peperoni Weight:</label>
+                                    <select asp-for="WeightOption.Products" class="form-control">
                                         <option value="@WeightOption.Choice.None">None</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Light</option>
                                         <option value="@WeightOption.Choice.Light">Light</option>
@@ -89,8 +88,8 @@
                                         <option value="@WeightOption.Choice.Heavy">Heavy</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Heavy</option>
                                     </select>
-                                    <label asp-for="ProductWeight.MushroomWeight">Mushroom Weight:</label>
-                                    <select asp-for="ProductWeight.MushroomWeight" class="form-control">
+                                    <label asp-for="WeightOption.Products">Mushroom Weight:</label>
+                                    <select asp-for="WeightOption.Products" class="form-control">
                                         <option value="@WeightOption.Choice.None">None</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Light</option>
                                         <option value="@WeightOption.Choice.Light">Light</option>
@@ -98,8 +97,8 @@
                                         <option value="@WeightOption.Choice.Heavy">Heavy</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Heavy</option>
                                     </select>
-                                    <label asp-for="ProductWeight.TunaWeight">Tuna Weight:</label>
-                                    <select asp-for="ProductWeight.TunaWeight" class="form-control">
+                                    <label asp-for="WeightOption.Products">Tuna Weight:</label>
+                                    <select asp-for="WeightOption.Products" class="form-control">
                                         <option value="@WeightOption.Choice.None">None</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Light</option>
                                         <option value="@WeightOption.Choice.Light">Light</option>
@@ -107,8 +106,8 @@
                                         <option value="@WeightOption.Choice.Heavy">Heavy</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Heavy</option>
                                     </select>
-                                    <label asp-for="ProductWeight.PineappleWeight">Pineapple Weight:</label>
-                                    <select asp-for="ProductWeight.PineappleWeight" class="form-control">
+                                    <label asp-for="WeightOption.Products">Pineapple Weight:</label>
+                                    <select asp-for="WeightOption.Products" class="form-control">
                                         <option value="@WeightOption.Choice.None">None</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Light</option>
                                         <option value="@WeightOption.Choice.Light">Light</option>
@@ -116,8 +115,8 @@
                                         <option value="@WeightOption.Choice.Heavy">Heavy</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Heavy</option>
                                     </select>
-                                    <label asp-for="ProductWeight.HamWeight">Ham Weight:</label>
-                                    <select asp-for="ProductWeight.HamWeight" class="form-control">
+                                    <label asp-for="WeightOption.Products">Ham Weight:</label>
+                                    <select asp-for="WeightOption.Products" class="form-control">
                                         <option value="@WeightOption.Choice.None">None</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Light</option>
                                         <option value="@WeightOption.Choice.Light">Light</option>
@@ -125,8 +124,8 @@
                                         <option value="@WeightOption.Choice.Heavy">Heavy</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Heavy</option>
                                     </select>
-                                    <label asp-for="ProductWeight.BeefWeight">Beef Weight:</label>
-                                    <select asp-for="ProductWeight.BeefWeight" class="form-control">
+                                    <label asp-for="WeightOption.Products">Beef Weight:</label>
+                                    <select asp-for="WeightOption.Products" class="form-control">
                                         <option value="@WeightOption.Choice.None">None</option>
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Light</option>
                                         <option value="@WeightOption.Choice.Light">Light</option>
@@ -135,7 +134,7 @@
                                         <option value="@WeightOption.Choice.ExtraHeavy">Extra Heavy</option>
                                     </select>
                                 </div>
-                                <button class="btn btn-primary mt-3" type="submit" asp-controller="PizzaModel" asp-action="CreditCardIndex">Order my pizza</button>
+                                <button class="btn btn-primary mt-3" type="submit" asp-controller="PizzaModel" asp-action="OrderIndex">Order my pizza</button>
                             </form>
                         </div>
                     </div>

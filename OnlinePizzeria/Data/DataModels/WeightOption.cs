@@ -13,6 +13,18 @@
             Heavy,
             ExtraHeavy
         }
-        public Choice Option { get; set; } 
+        public Choice Option { get; set; }
+        public enum Product
+        {
+            TomatoWeight,
+            CheeseWeight,
+            PeperoniWeight,
+            MushroomWeight,
+            TunaWeight,
+            PineappleWeight,
+            HamWeight,
+            BeefWeight
+        }
+        public Product Products { get; set; }
     }
 }

@@ -6,6 +6,7 @@ namespace OnlinePizzeria.Model
     public class Order
     {
         [Key]
+        [Required]
         public string? OrderId { get; set; }
         public Customer Customer { get; set; }
         public ICollection<PizzaModel> Pizza { get; set; } 
@@ -15,7 +16,6 @@ namespace OnlinePizzeria.Model
         public DateTime OrderDate { get; set; }
         public Provider Provider { get; set; }
         public bool IsDelivered { get; set; } 
-
 
     }
 }
