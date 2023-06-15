@@ -1,0 +1,78 @@
+﻿@model List<CustomPizzaViewModel>
+@{
+	ViewData["Title"] = "List of Pizzas";
+
+}
+
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-primary text-white ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white py-2">Custom pizza List</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3">
+			<div class="col-6">
+			</div>
+			<div class="col-6 text-end">
+				<a asp-controller="CustomPizza" asp-action="AddCustomPizza" class="btn btn-outline-primary">
+					<i class="bi bi-plus-circle"></i>Create New Pizza
+				</a>
+			</div>
+		</div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr class="text-center">
+					<th>Pizza name</th>
+					<th>Tomato sauce</th>
+					<th>Cheese</th>
+					<th>Pepperoni</th>
+					<th>Mushroom</th>
+					<th>Tuna</th>
+					<th>Pineapple</th>
+					<th>Ham</th>
+					<th>Beef</th>
+					<th>Price</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var pizza in Model)
+				{
+					<tr class="text-center">
+						<td>@Html.DisplayFor(model => pizza.PizzaName)</td>
+						<td>@Html.DisplayFor(model => pizza.TomatoSauce)</td>
+						<td>@Html.DisplayFor(model => pizza.Cheese)</td>
+						<td>@Html.DisplayFor(model => pizza.Peperoni)</td>
+						<td>@Html.DisplayFor(model => pizza.Mushroom)</td>
+						<td>@Html.DisplayFor(model => pizza.Tuna)</td>
+						<td>@Html.DisplayFor(model => pizza.Pineapple)</td>
+						<td>@Html.DisplayFor(model => pizza.Ham)</td>
+						<td>@Html.DisplayFor(model => pizza.Beef)</td>
+						<td>
+							<span class="currency-symbol">лв.</span>
+							@Html.DisplayFor(model => pizza.Price)
+						</td>
+						<td>
+							<div class="w-100 btn-group" role="group">
+								<a class="btn btn-outline-primary" asp-action="UpdateCustomPizza" asp-route-id="@pizza.Id"><i class="bi bi-pencil square">Update</i></a>
+								<a class="btn btn-outline-info" asp-action="Details" asp-route-id="@pizza.Id"><i class="bi bi-eye"></i>Details</a>
+								<a class="btn btn-outline-danger" asp-action="DeleteCustomPizza" asp-route-id="@pizza.Id"><i class="bi bi-trash"></i>Delete</a>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+<style>
+	.currency-symbol {
+		font-weight: bold;
+		color: lightgreen;
+		margin-left: 2px;
+		float: right;
+	}
+</style>

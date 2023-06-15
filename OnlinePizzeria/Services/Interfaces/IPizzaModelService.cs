@@ -5,11 +5,12 @@ namespace OnlinePizzeria.Services.Interfaces
     public interface IPizzaModelService
     {
         List<PizzaViewModel> GetAll();
-        Task CreateAsync(PizzaViewModel model);
-        Task DeletePizza(string pizzaModelId);
-        PizzaViewModel GetDetailsById(string pizzaModelId);
-        Task UpdateAsync(PizzaViewModel model);
-        PizzaViewModel UpdateById(string pizzaModelId);
-        float CalculateCustomPizza(PizzaViewModel pizza, WeightOptionViewModel weight);
+        Task CreateAsync(PizzaViewModel model, IFormFile imageFile);
+        Task DeletePizza(string id);
+        PizzaViewModel GetDetailsById(string id);
+        Task UpdateAsync(PizzaViewModel model, IFormFile imageFile);
+        Task<PizzaViewModel> UpdateById(string id);
+        Task<bool> PizzaExists(string id);
+        float CalculatePizza(PizzaViewModel pizza);
     }
 }

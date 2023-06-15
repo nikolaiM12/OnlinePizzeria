@@ -1,0 +1,102 @@
+﻿@model CustomPizzaViewModel
+@{
+    ViewData["Title"] = "Details for pizza";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Details</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="PizzaName" class="form-label">Pizza Name:</label>
+                        <input asp-for="PizzaName" class="form-control" readonly />
+                        <span asp-validation-for="PizzaName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="BasePrice" class="form-label">Base price:</label>
+                        <input asp-for="BasePrice" class="form-control" readonly />
+                        <span asp-validation-for="BasePrice" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="TomatoSauce" class="form-label">Tomato Sauce</label>
+                        <input asp-for="TomatoSauce" type="checkbox" class="form-check-input" disabled />
+                        <span asp-validation-for="TomatoSauce" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Cheese" class="form-label">Cheese</label>
+                        <input asp-for="Cheese" type="checkbox" class="form-check-input" disabled />
+                        <span asp-validation-for="Cheese" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Peperoni" class="form-label">Pepperoni</label>
+                        <input asp-for="Peperoni" type="checkbox" class="form-check-input" disabled />
+                        <span asp-validation-for="Peperoni" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Mushroom" class="form-label">Mushroom</label>
+                        <input asp-for="Mushroom" type="checkbox" class="form-check-input" disabled />
+                        <span asp-validation-for="Mushroom" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Tuna" class="form-label">Tuna</label>
+                        <input asp-for="Tuna" type="checkbox" class="form-check-input" disabled />
+                        <span asp-validation-for="Tuna" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Pineapple" class="form-label">Pineapple</label>
+                        <input asp-for="Pineapple" type="checkbox" class="form-check-input" disabled />
+                        <span asp-validation-for="Pineapple" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Ham" class="form-label">Ham</label>
+                        <input asp-for="Ham" type="checkbox" class="form-check-input" disabled />
+                        <span asp-validation-for="Ham" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Beef" class="form-label">Beef</label>
+                        <input asp-for="Beef" type="checkbox" class="form-check-input" disabled />
+                        <span asp-validation-for="Beef" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FinalPrice" class="form-label">Final price:</label>
+                        <input asp-for="FinalPrice" class="form-control" readonly />
+                        <span asp-validation-for="FinalPrice" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Price" class="form-label">Price:</label>
+                        <input asp-for="Price" class="form-control" readonly />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Order.Address" class="form-label">Address:</label>
+                        <input asp-for="Order.Address" class="form-control" readonly />
+                        <span asp-validation-for="Order.Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a class="btn btn-outline-success float-end" asp-action="UpdateCustomPizza" asp-route-id="@Model.Id">Update</a>
+                            <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

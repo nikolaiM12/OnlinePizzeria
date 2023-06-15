@@ -4,7 +4,9 @@ using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using OnlinePizzeria.Controllers;
 using OnlinePizzeria.Data;
+using OnlinePizzeria.Data.DataModels;
 using OnlinePizzeria.Services;
+using OnlinePizzeria.Services.Interfaces;
 
 namespace OnlinePizzeria
 {
@@ -20,14 +22,29 @@ namespace OnlinePizzeria
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddIdentity<User, Role>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+             .AddDefaultUI()
+             .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider)
+             .AddRoles<Role>();
+
+            builder.Services.AddTransient<UserService, UserService>();
             builder.Services.AddTransient<PizzaModelService, PizzaModelService>();
             builder.Services.AddTransient<OrderService, OrderService>();
             builder.Services.AddTransient<CreditCardPaymentService, CreditCardPaymentService>();
             builder.Services.AddTransient<ProviderService, ProviderService>();
             builder.Services.AddTransient<CustomerService, CustomerService>();
+            builder.Services.AddTransient<CustomPizzaService, CustomPizzaService>();
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+            });
+
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 

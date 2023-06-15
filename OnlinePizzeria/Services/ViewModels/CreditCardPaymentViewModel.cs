@@ -7,7 +7,7 @@ namespace OnlinePizzeria.Services.ViewModels
 {
     public class CreditCardPaymentViewModel
     {
-        public string? CreditCardPaymentId { get; set; }
+        public string? Id { get; set; }
         [Required(ErrorMessage = "Card Number is required")]
         [RegularExpression(@"^(?:(?<visa>4[0-9]{3}-?[0-9]{4}-?[0-9]{4}-?[0-9]{4}(?:-?[0-9]{3})?)|(?<mastercard>5[1-5][0-9]{14}))$", 
         ErrorMessage = "Invalid card number")]
@@ -20,9 +20,10 @@ namespace OnlinePizzeria.Services.ViewModels
         [RegularExpression(@"^[0-9]{3,4}$", ErrorMessage = "Invalid CVV")]
         public string CVV { get; set; }
         [Required(ErrorMessage = "Amount is required")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than 0")]
         public float Amount { get; set; }
         public Customer Customer { get; set; }
+        public string CustomerId { get; set; }
         public Order Order { get; set; }
+        public string OrderId { get; set; }
     }
 }

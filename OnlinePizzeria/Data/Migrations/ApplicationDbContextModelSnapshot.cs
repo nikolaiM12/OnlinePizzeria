@@ -17,37 +17,10 @@ namespace OnlinePizzeria.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -72,71 +45,6 @@ namespace OnlinePizzeria.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -167,12 +75,10 @@ namespace OnlinePizzeria.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -201,6 +107,18 @@ namespace OnlinePizzeria.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "555d034b-a6bd-46b9-a67c-b5e9884f7fd2",
+                            RoleId = "ce2c1b15-86fe-4ce9-b6ac-4c6823bff988"
+                        },
+                        new
+                        {
+                            UserId = "afcd4ee3-c6b5-4fd7-8136-8003f664c496",
+                            RoleId = "f8988f73-dc5b-4f93-b874-d9875d6d5849"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -209,12 +127,10 @@ namespace OnlinePizzeria.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -224,9 +140,236 @@ namespace OnlinePizzeria.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("OnlinePizzeria.Data.DataModels.CustomPizza", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<float>("BasePrice")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("Beef")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Cheese")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("FinalPrice")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("Ham")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Mushroom")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Peperoni")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Pineapple")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PizzaName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("TomatoSauce")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Tuna")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("CustomPizzas");
+                });
+
+            modelBuilder.Entity("OnlinePizzeria.Data.DataModels.Role", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "ce2c1b15-86fe-4ce9-b6ac-4c6823bff988",
+                            ConcurrencyStamp = "7314d211-018f-402b-9c98-6d38e8bbcd3c",
+                            CreationDate = new DateTime(2023, 6, 15, 9, 53, 14, 74, DateTimeKind.Local).AddTicks(6597),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "f8988f73-dc5b-4f93-b874-d9875d6d5849",
+                            ConcurrencyStamp = "5c827e41-3bfc-491d-9f32-906b9e65c6db",
+                            CreationDate = new DateTime(2023, 6, 15, 9, 53, 14, 74, DateTimeKind.Local).AddTicks(6699),
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
+                });
+
+            modelBuilder.Entity("OnlinePizzeria.Data.DataModels.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastLoginDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProfilePicturePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "555d034b-a6bd-46b9-a67c-b5e9884f7fd2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "63fcfeda-d658-4080-8726-86a289d32a41",
+                            CreationDate = new DateTime(2023, 6, 15, 9, 53, 14, 74, DateTimeKind.Local).AddTicks(6784),
+                            Email = "a@admin.com",
+                            EmailConfirmed = true,
+                            LastLoginDate = new DateTime(2023, 6, 15, 9, 53, 14, 74, DateTimeKind.Local).AddTicks(6787),
+                            LockoutEnabled = false,
+                            NormalizedEmail = "A@ADMIN.COM",
+                            NormalizedUserName = "PETAR",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDZCevkjggRxs4NWp+0dzB1dU9QmHSazGnOu487bLvEVYU9XpKu43cQoi3Uyhn2Qvw==",
+                            PhoneNumberConfirmed = false,
+                            ProfilePicturePath = "/ProfilePictures/default.jpg",
+                            SecurityStamp = "27e644a5-7fb3-46b4-bf22-b3bad4cdfe79",
+                            TwoFactorEnabled = false,
+                            UserName = "Petar"
+                        },
+                        new
+                        {
+                            Id = "afcd4ee3-c6b5-4fd7-8136-8003f664c496",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "64bb6f45-272a-404c-b7c0-2d3b7b50bff0",
+                            CreationDate = new DateTime(2023, 6, 15, 9, 53, 14, 77, DateTimeKind.Local).AddTicks(5801),
+                            Email = "u@user.com",
+                            EmailConfirmed = true,
+                            LastLoginDate = new DateTime(2023, 6, 15, 9, 53, 14, 77, DateTimeKind.Local).AddTicks(5831),
+                            LockoutEnabled = false,
+                            NormalizedEmail = "U@USER.COM",
+                            NormalizedUserName = "GEORGI",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDw1q/h5fDf1CBm3iIP6Tc5C4Pp4yUz3KPNLi6ro27bc+b36fVz5zt9LpVWrNKNy7w==",
+                            PhoneNumberConfirmed = false,
+                            ProfilePicturePath = "/ProfilePictures/default.jpg",
+                            SecurityStamp = "6b5e9ba3-a42e-44ab-9121-e423abd64d98",
+                            TwoFactorEnabled = false,
+                            UserName = "Georgi"
+                        });
+                });
+
             modelBuilder.Entity("OnlinePizzeria.Model.CreditCardPayment", b =>
                 {
-                    b.Property<string>("CreditCardPaymentId")
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("Amount")
@@ -240,6 +383,9 @@ namespace OnlinePizzeria.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CustomerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -248,10 +394,14 @@ namespace OnlinePizzeria.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("OrderId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("CreditCardPaymentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -262,12 +412,16 @@ namespace OnlinePizzeria.Migrations
 
             modelBuilder.Entity("OnlinePizzeria.Model.Customer", b =>
                 {
-                    b.Property<string>("CustomerId")
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -281,45 +435,53 @@ namespace OnlinePizzeria.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CustomerId");
+                    b.HasKey("Id");
 
                     b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("OnlinePizzeria.Model.Order", b =>
                 {
-                    b.Property<string>("OrderId")
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("BasePrice")
-                        .HasColumnType("real");
-
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("IsDelivered")
-                        .HasColumnType("bit");
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
                     b.Property<string>("ProviderId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -330,7 +492,8 @@ namespace OnlinePizzeria.Migrations
 
             modelBuilder.Entity("OnlinePizzeria.Model.PizzaModel", b =>
                 {
-                    b.Property<string>("PizzaModelId")
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("BasePrice")
@@ -342,20 +505,39 @@ namespace OnlinePizzeria.Migrations
                     b.Property<bool>("Cheese")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("FinalPrice")
                         .HasColumnType("real");
 
                     b.Property<bool>("Ham")
                         .HasColumnType("bit");
 
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("ImageTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Mushroom")
                         .HasColumnType("bit");
 
                     b.Property<string>("OrderId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Peperoni")
@@ -368,13 +550,16 @@ namespace OnlinePizzeria.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
                     b.Property<bool>("TomatoSauce")
                         .HasColumnType("bit");
 
                     b.Property<bool>("Tuna")
                         .HasColumnType("bit");
 
-                    b.HasKey("PizzaModelId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
@@ -383,11 +568,18 @@ namespace OnlinePizzeria.Migrations
 
             modelBuilder.Entity("OnlinePizzeria.Model.Provider", b =>
                 {
-                    b.Property<string>("ProviderId")
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -404,14 +596,14 @@ namespace OnlinePizzeria.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProviderId");
+                    b.HasKey("Id");
 
                     b.ToTable("Providers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("OnlinePizzeria.Data.DataModels.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -420,7 +612,7 @@ namespace OnlinePizzeria.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("OnlinePizzeria.Data.DataModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -429,7 +621,7 @@ namespace OnlinePizzeria.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("OnlinePizzeria.Data.DataModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -438,13 +630,13 @@ namespace OnlinePizzeria.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("OnlinePizzeria.Data.DataModels.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("OnlinePizzeria.Data.DataModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -453,11 +645,22 @@ namespace OnlinePizzeria.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("OnlinePizzeria.Data.DataModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OnlinePizzeria.Data.DataModels.CustomPizza", b =>
+                {
+                    b.HasOne("OnlinePizzeria.Model.Order", "Order")
+                        .WithMany("CustomPizzas")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("OnlinePizzeria.Model.CreditCardPayment", b =>
@@ -470,7 +673,9 @@ namespace OnlinePizzeria.Migrations
 
                     b.HasOne("OnlinePizzeria.Model.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 
@@ -480,14 +685,16 @@ namespace OnlinePizzeria.Migrations
             modelBuilder.Entity("OnlinePizzeria.Model.Order", b =>
                 {
                     b.HasOne("OnlinePizzeria.Model.Customer", "Customer")
-                        .WithMany("Orders")
+                        .WithMany("Order")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OnlinePizzeria.Model.Provider", "Provider")
-                        .WithMany("DeliveredOrders")
-                        .HasForeignKey("ProviderId");
+                        .WithMany("Order")
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 
@@ -496,24 +703,30 @@ namespace OnlinePizzeria.Migrations
 
             modelBuilder.Entity("OnlinePizzeria.Model.PizzaModel", b =>
                 {
-                    b.HasOne("OnlinePizzeria.Model.Order", null)
-                        .WithMany("Pizza")
-                        .HasForeignKey("OrderId");
+                    b.HasOne("OnlinePizzeria.Model.Order", "Order")
+                        .WithMany("Pizzas")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("OnlinePizzeria.Model.Customer", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("OnlinePizzeria.Model.Order", b =>
                 {
-                    b.Navigation("Pizza");
+                    b.Navigation("CustomPizzas");
+
+                    b.Navigation("Pizzas");
                 });
 
             modelBuilder.Entity("OnlinePizzeria.Model.Provider", b =>
                 {
-                    b.Navigation("DeliveredOrders");
+                    b.Navigation("Order");
                 });
 #pragma warning restore 612, 618
         }

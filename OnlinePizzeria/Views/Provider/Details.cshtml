@@ -1,0 +1,54 @@
+﻿@model ProviderViewModel
+@{
+    ViewData["Title"] = "Details for provider";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Details</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label">Name:</label>
+                        <input asp-for="Name" class="form-control" pattern="[A-Za-z]+" readonly />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label">Phone number:</label>
+                        <input asp-for="PhoneNumber" class="form-control" pattern="^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$" readonly />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Veliche" class="form-label">Veliche:</label>
+                        <input asp-for="Veliche" class="form-control" readonly />
+                        <span asp-validation-for="Veliche" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="IsAvailable">Is Available:</label>
+                        <input asp-for="IsAvailable" type="checkbox" class="form-check-input" disabled />
+                        <span asp-validation-for="Veliche" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Rating" class="form-label">Rating:</label>
+                        <input asp-for="Rating" class="form-control" readonly />
+                        <span asp-validation-for="Rating" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a class="btn btn-outline-success float-end" asp-action="UpdateProvider" asp-route-id="@Model.Id">Update</a>
+                            <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

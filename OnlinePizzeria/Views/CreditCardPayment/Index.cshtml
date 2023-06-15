@@ -1,118 +1,58 @@
-﻿@model IEnumerable<CreditCardPaymentViewModel>
-@using OnlinePizzeria.Data.DataModels
+﻿@model List<CreditCardPaymentViewModel>
+@{
+	ViewData["Title"] = "List of Payments";
+}
 
-
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Credit Card Payment Index</title>
-			<style>
-				body {
-					font-family: Arial, sans-serif;
-				}
-
-				h1 {
-					margin-top: 20px;
-					text-align: center;
-				}
-
-				table {
-					border-collapse: collapse;
-					margin: auto;
-				}
-
-				table th, table td {
-					padding: 10px;
-					border: 1px solid #ddd;
-					text-align: center;
-				}
-
-				table th {
-					background-color: #f2f2f2;
-				}
-
-				form {
-					max-width: 500px;
-					margin: 20px auto;
-					padding: 20px;
-					border: 1px solid #ddd;
-					border-radius: 5px;
-					box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
-				}
-
-				form label {
-					display: block;
-					margin-bottom: 5px;
-				}
-
-				form input[type="text"] {
-					width: 100%;
-					padding: 10px;
-					border: 1px solid #ccc;
-					border-radius: 5px;
-					margin-bottom: 20px;
-				}
-
-				form input[type="submit"] {
-					background-color: #4CAF50;
-					color: white;
-					border: none;
-					padding: 10px 20px;
-					text-align: center;
-					text-decoration: none;
-					display: inline-block;
-					font-size: 16px;
-					border-radius: 5px;
-					cursor: pointer;
-				}
-
-					form input[type="submit"]:hover {
-						background-color: #3e8e41;
-					}
-		</style>
-	</head>
-	<body>
-		<h1>Credit Card Payment Index</h1>
-
-		<table>
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-primary text-white ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white py-2">Payment List</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3">
+			<div class="col-6">
+			</div>
+			<div class="col-6 text-end">
+				<a asp-controller="CreditCardPayment" asp-action="AddPayment" class="btn btn-outline-primary">
+					<i class="bi bi-plus-circle"></i>Create New Payment
+				</a>
+			</div>
+		</div>
+		<table class="table table-bordered table-striped">
 			<thead>
-				<tr>
-					<th>Credit Card Payment Id</th>
+				<tr class="text-center">
 					<th>Card Number</th>
 					<th>Expiration Date</th>
 					<th>CVV</th>
 					<th>Amount</th>
-					<th>Customer Name</th>
-					<th>Order Id</th>
-					<th colspan="7">
-						<a class="btn btn-primary" asp-area="" asp-controller="CreditCardPayment" asp-action="AddPayment">Add Payment</a>
-					</th>
-					<th colspan="7">
-						<a class="btn btn-primary" asp-area="" asp-controller="CreditCardPayment" asp-action="DeletePayment">Delete Payment</a>
-					</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
-			@if (Model != null && Model.Any())
-			{
-				@foreach (var payment in Model)
+				@foreach (var payment in Model.OrderBy(n => n.Amount))
 				{
-					<tr>
-						<td>@payment.CreditCardPaymentId</td>
-						<td>@payment.CardNumber</td>
-						<td>@payment.ExpirationDate</td>
-						<td>@payment.CVV</td>
-						<td>@payment.Amount</td>
-						<td>@(
-						payment.Customer.FirstName + " " + payment.Customer.LastName
-						)</td>
-						<td>@payment.Order.OrderId</td>
+					<tr class="text-center">
+						<td>@Html.DisplayFor(model => payment.CardNumber)</td>
+						<td>@Html.DisplayFor(model => payment.ExpirationDate)</td>
+						<td>@Html.DisplayFor(model => payment.CVV)</td>
+						<td>@Html.DisplayFor(model => payment.Amount)</td>
+						<td>
+							<div class="w-100 btn-group" role="group">
+								<a class="btn btn-outline-primary" asp-action="UpdatePayment" asp-route-id="@payment.Id"><i class="bi bi-pencil square"></i>Update</a>
+								<a class="btn btn-outline-info" asp-action="Details" asp-route-id="@payment.Id"><i class="bi bi-eye"></i>Details</a>
+								<a class="btn btn-outline-danger" asp-action="DeletePayment" asp-route-id="@payment.Id"><i class="bi bi-trash-fill"></i>Delete</a>
+							</div>
+						</td>
 					</tr>
 				}
-			}
 			</tbody>
-	   </table>
-	</body>
-</html>
+		</table>
+	</div>
+</div>
+
+
 
 

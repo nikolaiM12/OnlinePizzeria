@@ -1,4 +1,66 @@
-﻿@model OrderViewModel
-@using OnlinePizzeria.Data.DataModels;
+﻿@model List<OrderViewModel>
+@{
+	ViewData["Title"] = "List of Orders";
+}
 
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-primary text-white ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white py-2">Order List</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3">
+			<div class="col-6">
+			</div>
+			<div class="col-6 text-end">
+				<a asp-controller="Order" asp-action="AddOrder" class="btn btn-outline-primary">
+					<i class="bi bi-plus-circle"></i>Create New Order
+				</a>
+			</div>
+		</div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr class="text-center">
+					<th>Price</th>
+					<th>Address</th>
+					<th>City</th>
+					<th>Order Date</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var order in Model.OrderBy(n => n.Price))
+				{
+					<tr class="text-center">
+						<td>
+							<span class="currency-symbol">лв.</span>
+							@Html.DisplayFor(model => order.Price)
+						</td>
+						<td>@Html.DisplayFor(model => order.Address)</td>
+						<td>@Html.DisplayFor(model => order.City)</td>
+						<td>@Html.DisplayFor(model => order.OrderDate)</td>
+						<td>
+							<div class="w-100 btn-group" role="group">
+								<a class="btn btn-outline-primary" asp-action="UpdateOrder" asp-route-id="@order.Id"><i class="bi bi-pencil square"></i>Update</a>
+								<a class="btn btn-outline-info" asp-action="Details" asp-route-id="@order.Id"><i class="bi bi-eye"></i>Details</a>
+								<a class="btn btn-outline-danger" asp-action="DeleteOrder" asp-route-id="@order.Id"><i class="bi bi-trash-fill"></i>Delete</a>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+<style>
+	.currency-symbol {
+		font-weight: bold;
+		color: lightgreen;
+		margin-left: 2px;
+		float: right;
+	}
+</style>
 

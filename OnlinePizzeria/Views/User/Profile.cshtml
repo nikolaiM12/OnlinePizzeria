@@ -1,0 +1,56 @@
+﻿@using OnlinePizzeria.Data.DataModels;
+@model User
+
+@{
+    ViewData["Title"] = $"Profile - {Model.UserName}";
+}
+
+<div class="card profile-card text-center">
+    <div class="d-flex justify-content-center">
+        <img src="@Model.ProfilePicturePath" class="card-img-top profile-picture" style="width: 10%;" alt="ProfilePicture">
+    </div>
+    <div class="card-body">
+        <h2 class="card-title profile-username">@Model.UserName</h2>
+        @if (ViewBag.UserRoles != null)
+        {
+            var userRoles = ViewBag.UserRoles[Model.UserName];
+            if (userRoles != null && userRoles.Count > 0)
+            {
+                <div class="card-text profile-roles">
+                    <h4 class="card-subtitle mb-2 text-muted profile-role-heading">Roles:</h4>
+                    <ul class="list-unstyled profile-role-list">
+                        @foreach (var role in userRoles)
+                        {
+                            <li class="profile-role">@role</li>
+                        }
+                    </ul>
+                </div>
+            }
+        }
+        <div class="profile-info">
+            <div class="profile-info-item">
+                <h4 class="profile-info-label">Email:</h4>
+                <p class="profile-info-value">@Model.Email</p>
+            </div>
+            <div class="profile-info-item">
+                <h4 class="profile-info-label">Account created on:</h4>
+                <p class="profile-info-value">@Model.CreationDate</p>
+            </div>
+            <div class="profile-info-item">
+                <h4 class="profile-info-label">Last seen:</h4>
+                <p class="profile-info-value">@Model.LastLoginDate</p>
+            </div>
+            @if (User.Identity.Name == Model.UserName)
+            {
+                <p class="profile-message">You are logged in as this user.</p>
+            }
+        </div>
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-outline-secondary" asp-action="Index">Show all</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

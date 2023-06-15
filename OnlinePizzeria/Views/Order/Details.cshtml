@@ -1,0 +1,57 @@
+﻿@model OrderViewModel
+@{
+    ViewData["Title"] = "Details for order";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Details</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label">Address:</label>
+                        <input asp-for="Address" class="form-control" readonly />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="City" class="form-label">City:</label>
+                        <input asp-for="City" class="form-control" readonly />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="OrderDate" class="form-label">Order Date:</label>
+                        <input asp-for="OrderDate" class="form-control" readonly />
+                        <span asp-validation-for="OrderDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CustomerId" class="form-label">Customer:</label>
+                        @{
+                            string customerFullName = $"{Model.Customer.FirstName} {Model.Customer.LastName}";
+                        }
+                        <input type="text" class="form-control" readonly value="@customerFullName">
+                        <span asp-validation-for="CustomerId" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label asp-for="Provider.Name" class="form-label">Provider:</label>
+                        <input asp-for="Provider.Name" class="form-control" readonly />
+                        <span asp-validation-for="Provider.Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a class="btn btn-outline-success float-end" asp-action="UpdateOrder" asp-route-id="@Model.Id">Update</a>
+                            <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

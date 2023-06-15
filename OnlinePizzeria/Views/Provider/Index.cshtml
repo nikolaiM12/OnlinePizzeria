@@ -1,4 +1,56 @@
-﻿@model ProviderViewModel
-@using OnlinePizzeria.Data.DataModels;
+﻿@model List<ProviderViewModel>
 @{
+	ViewData["Title"] = "List of Providers";
 }
+
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-primary text-white ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white py-2">Provider List</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3">
+			<div class="col-6">
+			</div>
+			<div class="col-6 text-end">
+				<a asp-controller="Provider" asp-action="AddProvider" class="btn btn-outline-primary">
+					<i class="bi bi-plus-circle"></i>Create New Provider
+				</a>
+			</div>
+		</div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr class="text-center">
+					<th>Name</th>
+					<th>Phone number</th>
+					<th>Veliche</th>
+					<th>IsAvailable</th>
+					<th>Rating</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var provider in Model.OrderBy(n => n.Name))
+				{
+					<tr class="text-center">
+						<td>@Html.DisplayFor(model => provider.Name)</td>
+						<td>@Html.DisplayFor(model => provider.PhoneNumber)</td>
+						<td>@Html.DisplayFor(model => provider.Veliche)</td>
+						<td>@Html.DisplayFor(model => provider.IsAvailable)</td>
+						<td>@Html.DisplayFor(model => provider.Rating)</td>
+						<td>
+							<div class="w-100 btn-group" role="group">
+								<a class="btn btn-outline-primary" asp-controller="Provider" asp-action="UpdateProvider" asp-route-id="@provider.Id"><i class="bi bi-pencil square"></i>Update</a>
+								<a class="btn btn-outline-info" asp-controller="Provider" asp-action="Details" asp-route-id="@provider.Id"><i class="bi bi-eye"></i>Details</a>
+								<a class="btn btn-outline-danger" asp-controller="Provider" asp-action="DeleteProvider" asp-route-id="@provider.Id"><i class="bi bi-trash-fill"></i>Delete</a>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

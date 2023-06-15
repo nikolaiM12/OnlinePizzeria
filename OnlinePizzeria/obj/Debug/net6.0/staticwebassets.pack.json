@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\OnlinePizzeria.bundle.scp.css"
     },
     {
+      "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\ProfilePictures\\default.jpg",
+      "PackagePath": "staticwebassets\\ProfilePictures\\default.jpg"
+    },
+    {
       "Id": "C:\\Уеб програмиране с .NET\\OnlinePizzeria\\OnlinePizzeria\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

@@ -1,0 +1,56 @@
+﻿@model ProviderViewModel
+@{
+    ViewData["Title"] = "Add a provider";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Add Provider</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddProvider">
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Name:</label>
+                            <input asp-for="Name" class="form-control" pattern="^[A-Za-z]+(\s[A-Za-z]+)?$" required placeholder="Enter your name...">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PhoneNumber" class="form-label">Phone number:</label>
+                            <input asp-for="PhoneNumber" class="form-control" pattern="^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$" required placeholder="Enter a phone number...">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Veliche" class="form-label">Veliche:</label>
+                            <input asp-for="Veliche" class="form-control" required placeholder="Enter a veliche...">
+                            <span asp-validation-for="Veliche" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="IsAvailable">Is Available:</label>
+                            <input asp-for="IsAvailable" type="checkbox" class="form-check-input" />
+                            <span asp-validation-for="Veliche" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Rating" class="form-label">Rating:</label>
+                            <input asp-for="Rating" class="form-control" step="any" placeholder="Enter a rating...">
+                            <span asp-validation-for="Rating" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <input type="submit" value="Add" class="btn btn-outline-success">
+                                <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

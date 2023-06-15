@@ -1,0 +1,60 @@
+﻿@model OrderViewModel
+@{
+    ViewData["Title"] = "Add order";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Add Order</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddOrder">
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label">Address:</label>
+                            <input asp-for="Address" class="form-control" required placeholder="Enter an address...">
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="City" class="form-label">City:</label>
+                            <input asp-for="City" class="form-control" required placeholder="Enter a city...">
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="OrderDate" class="form-label">Order Date:</label>
+                            <input asp-for="OrderDate" class="form-control" required>
+                            <span asp-validation-for="OrderDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Price" class="form-label">Price:</label>
+                            <input asp-for="Price" class="form-control" required placeholder="Enter a price...">
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="CustomerId" class="form-label">Customer:</label>
+                            <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.Customers"></select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ProviderId" class="form-label">Provider:</label>
+                            <select asp-for="ProviderId" class="form-control" asp-items="ViewBag.Providers"></select>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <input type="submit" value="Add" class="btn btn-outline-success">
+                                <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,16 +1,111 @@
-﻿@model PizzaViewModel
+﻿@model List<PizzaViewModel>
 @{
+	ViewData["Title"] = "List of Pizzas";
+
 }
 
-<div class="container">
-    <div class="row justify-content-center align-items-center">
-        <div class="col-md-6 text-center">
-            <img src="~/images/Create.png" class="img-fluid mb-4 w-100" />
-        </div>
-        <div class="col-md-6 text-center">
-            <h3 class="mb-3">Create your own Pizza</h3>
-            <p class="lead mb-4">Make your own Pizza with our PizzaMaker!</p>
-            <a class="btn btn-primary" asp-area="" asp-controller="PizzaModel" asp-action="CustomPizza">Try Now</a>
-        </div>
-    </div>
+<div class="card shadow border-0 mt-4">
+	<div class="card-header bg-primary text-white ml-0 py-3">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white py-2">Pizza List</h2>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-4">
+		<div class="row pb-3">
+			<div class="col-6">
+			</div>
+			<div class="col-6 text-end">
+				<a asp-controller="PizzaModel" asp-action="AddPizza" class="btn btn-outline-primary">
+					<i class="bi bi-plus-circle"></i>Create New Pizza
+				</a>
+			</div>
+		</div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr class="text-center">
+					<th>Pizza name</th>
+					<th>Tomato sauce</th>
+					<th>Cheese</th>
+					<th>Pepperoni</th>
+					<th>Mushroom</th>
+					<th>Tuna</th>
+					<th>Pineapple</th>
+					<th>Ham</th>
+					<th>Beef</th>
+					<th>Price</th>
+					<th>Image</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var pizza in Model)
+				{
+					<tr class="text-center">
+						<td>@Html.DisplayFor(model => pizza.PizzaName)</td>
+						<td>@Html.DisplayFor(model => pizza.TomatoSauce)</td>
+						<td>@Html.DisplayFor(model => pizza.Cheese)</td>
+						<td>@Html.DisplayFor(model => pizza.Peperoni)</td>
+						<td>@Html.DisplayFor(model => pizza.Mushroom)</td>
+						<td>@Html.DisplayFor(model => pizza.Tuna)</td>
+						<td>@Html.DisplayFor(model => pizza.Pineapple)</td>
+						<td>@Html.DisplayFor(model => pizza.Ham)</td>
+						<td>@Html.DisplayFor(model => pizza.Beef)</td>
+						<td>
+							<span class="currency-symbol">лв.</span>
+							@Html.DisplayFor(model => pizza.Price)
+						</td>
+
+						<td class="text-center">
+							@if (!string.IsNullOrEmpty(pizza.ImageUrl))
+							{
+								<img src="@Url.Content(pizza.ImageUrl)" alt="Pizza Image" width="150" height="150" />
+							}
+						</td>
+						<td>
+							<div class="w-100 btn-group" role="group">
+								<a class="btn btn-outline-primary" asp-action="UpdatePizza" asp-route-id="@pizza.Id"><i class="bi bi-pencil square">Update</i></a>
+								<a class="btn btn-outline-info" asp-action="Details" asp-route-id="@pizza.Id"><i class="bi bi-eye"></i>Details</a>
+								<a class="btn btn-outline-danger" asp-action="DeletePizza" asp-route-id="@pizza.Id"><i class="bi bi-trash"></i>Delete</a>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
 </div>
+<div class="row mt-4 justify-content-center">
+	<div class="col-lg-4 col-md-6">
+		<div class="card text-center">
+			<img src="~/images/Create.png" alt="Create Pizza" class="card-img-top img-fluid">
+			<div class="card-body">
+				<h4 class="card-title">Create Your Own Pizza</h4>
+				<p class="card-text">Create your custom pizza with your favorite toppings.</p>
+				<a href="@Url.Action("AddCustomPizza", "CustomPizza")" class="btn btn-outline-primary btn-lg">Customize Now</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row mt-4">
+	@foreach (var pizza in Model)
+	{
+		<div class="col-md-4 mb-4">
+			<div class="card">
+				<img src="@Url.Content(pizza.ImageUrl)" alt="Pizza Image" class="card-img-top img-thumbnail" width="50" height="50">
+				<div class="card-body d-flex flex-column">
+					<a href="@Url.Action("PizzaDetails", new { id = pizza.Id, imageUrl = pizza.ImageUrl })" class="btn btn-outline-info">Read More</a>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+<style>
+	.currency-symbol {
+		font-weight: bold;
+		color: lightgreen;
+		margin-left: 2px;
+		float: right;
+	}
+</style>

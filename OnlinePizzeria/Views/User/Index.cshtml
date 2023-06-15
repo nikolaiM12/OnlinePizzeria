@@ -1,0 +1,69 @@
+﻿@using OnlinePizzeria.Data.DataModels;
+@model List<User>
+
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-primary text-white py-3">
+        <h2 class="text-center">User List</h2>
+    </div>
+    <div class="card-body p-4">
+        <div class="row pb-3">
+            <div class="col-6"></div>
+            <div class="col-6 text-end">
+            </div>
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr class="text-center">
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>Creation Date</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="text-center">
+                        <td>
+                            <img src="@item.ProfilePicturePath" alt="ProfilePicture" class="card-img-top img-fluid" style="width: 25%;">
+                            <a class="text-dark" asp-action="Profile" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.UserName)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @if (ViewBag.UserRoles != null)
+                            {
+                                @foreach (var userRole in ViewBag.UserRoles)
+                                {
+                                    @foreach (var role in userRole.Value)
+                                    {
+                                        if (userRole.Key == item.UserName)
+                                        {
+                                            <p>@role</p>
+                                        }
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastLoginDate)
+                        </td>
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

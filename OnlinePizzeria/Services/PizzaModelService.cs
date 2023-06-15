@@ -1,5 +1,6 @@
-﻿using OnlinePizzeria.Data;
-using OnlinePizzeria.Data.DataModels;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using OnlinePizzeria.Data;
 using OnlinePizzeria.Model;
 using OnlinePizzeria.Services.Interfaces;
 using OnlinePizzeria.Services.ViewModels;
@@ -9,133 +10,246 @@ namespace OnlinePizzeria.Services
     public class PizzaModelService : IPizzaModelService
     {
         private readonly ApplicationDbContext context;
+        private readonly OrderService orderService;
         public PizzaModelService(ApplicationDbContext post)
         {
             context = post;
+            orderService = new OrderService(context);
         }
+
         public List<PizzaViewModel> GetAll()
         {
-            return context.Pizza.Select(pizza => new PizzaViewModel()
+            return context.Pizza
+                .Include(p => p.Order)
+                .Select(pizza => new PizzaViewModel()
+                {
+                    Id = pizza.Id,
+                    PizzaName = pizza.PizzaName,
+                    ImageTitle = pizza.ImageTitle,
+                    TomatoSauce = pizza.TomatoSauce,
+                    Cheese = pizza.Cheese,
+                    Peperoni = pizza.Peperoni,
+                    Mushroom = pizza.Mushroom,
+                    Ham = pizza.Ham,
+                    BasePrice = pizza.BasePrice,
+                    Pineapple = pizza.Pineapple,
+                    FinalPrice = pizza.FinalPrice,
+                    Beef = pizza.Beef,
+                    Tuna = pizza.Tuna,
+                    Description = pizza.Description,
+                    ImageUrl = pizza.ImageUrl,
+                    Price = pizza.Price,
+                    ImageData = pizza.ImageData,
+                    Order = pizza.Order,
+                    OrderId = pizza.OrderId
+                }).ToList();
+        }
+
+        public List<SelectListItem> GetOrders()
+        {
+            var list = new List<SelectListItem>();
+
+            List<OrderViewModel> orders = orderService.GetAll();
+            list = orders.Select(order => new SelectListItem()
             {
-                ImageTitle = pizza.ImageTitle,
-                PizzaName = pizza.PizzaName,
-                BasePrice = pizza.BasePrice,
-                TomatoSauce = pizza.TomatoSauce,
-                Cheese = pizza.Cheese,
-                Peperoni = pizza.Peperoni,
-                Mushroom = pizza.Mushroom,
-                Tuna = pizza.Tuna,
-                Pineapple = pizza.Pineapple,
-                Ham = pizza.Ham,
-                Beef = pizza.Beef,
-                FinalPrice = pizza.FinalPrice,
-                PizzaSize = pizza.PizzaSize,
-                WeightOption = pizza.WeightOption
+                Value = order.Id,
+                Text = order.Address
             }).ToList();
-        }
-        public async Task CreateAsync(PizzaViewModel model)
-        {
-            PizzaModel pizzaModel = new PizzaModel();
 
-            pizzaModel.PizzaModelId = model.PizzaModelId;
-            pizzaModel.ImageTitle = model.ImageTitle;
-            pizzaModel.PizzaName = model.PizzaName;
-            pizzaModel.BasePrice = model.BasePrice;
-            pizzaModel.TomatoSauce = model.TomatoSauce;
-            pizzaModel.Cheese = model.Cheese;
-            pizzaModel.Peperoni = model.Peperoni;
-            pizzaModel.Mushroom = model.Mushroom;
-            pizzaModel.Tuna = model.Tuna;
-            pizzaModel.Pineapple = model.Pineapple;
-            pizzaModel.Ham = model.Ham;
-            pizzaModel.Beef = model.Beef;
-            pizzaModel.FinalPrice = model.FinalPrice;
-            pizzaModel.PizzaSize = model.PizzaSize;
-            pizzaModel.WeightOption = model.WeightOption;
-
-            await context.Pizza.AddAsync(pizzaModel);
-            await context.SaveChangesAsync();
-        }
-        public async Task DeletePizza(string pizzaModelId)
-        {
-            var pizzamodelDb = context.Pizza.FirstOrDefault(x => x.PizzaModelId == pizzaModelId);
-            context.Pizza.Remove(pizzamodelDb);
-            await context.SaveChangesAsync();
-        }
-
-        public PizzaViewModel GetDetailsById(string pizzaModelId)
-        {
-            PizzaViewModel pizza = context.Pizza
-                .Select(pizza => new PizzaViewModel()
-                {
-                    PizzaModelId = pizza.PizzaModelId,
-                    ImageTitle = pizza.ImageTitle,
-                    PizzaName = pizza.PizzaName,
-                    BasePrice = pizza.BasePrice,
-                    TomatoSauce = pizza.TomatoSauce,
-                    Cheese = pizza.Cheese,
-                    Peperoni = pizza.Peperoni,
-                    Mushroom = pizza.Mushroom,
-                    Tuna = pizza.Tuna,
-                    Pineapple = pizza.Pineapple,
-                    Ham = pizza.Ham,
-                    Beef = pizza.Beef,
-                    FinalPrice = pizza.FinalPrice,
-                    PizzaSize = pizza.PizzaSize,
-                    WeightOption = pizza.WeightOption
-                }).SingleOrDefault(pizza => pizza.PizzaModelId == pizzaModelId);
-            return pizza;
-        }
-        public async Task UpdateAsync(PizzaViewModel model)
-        {
-            PizzaModel? pizzaModel = context.Pizza.Find(model.PizzaModelId);
-            bool isPizzaNull = pizzaModel == null;
-            if (isPizzaNull)
+            var defaultItem = new SelectListItem()
             {
-                return;
-            }
-            pizzaModel.ImageTitle = model.ImageTitle;
-            pizzaModel.PizzaName = model.PizzaName;
-            pizzaModel.BasePrice = model.BasePrice;
-            pizzaModel.TomatoSauce = model.TomatoSauce;
-            pizzaModel.Cheese = model.Cheese;
-            pizzaModel.Peperoni = model.Peperoni;
-            pizzaModel.Mushroom = model.Mushroom;
-            pizzaModel.Tuna = model.Tuna;
-            pizzaModel.Pineapple = model.Pineapple;
-            pizzaModel.Ham = model.Ham;
-            pizzaModel.Beef = model.Beef;
-            pizzaModel.FinalPrice = model.FinalPrice;
-            pizzaModel.PizzaSize = model.PizzaSize;
-            pizzaModel.WeightOption = model.WeightOption;
+                Value = null,
+                Text = "---Select a Order Address---"
+            };
 
-            context.Pizza.Update(pizzaModel);
+            list.Insert(0, defaultItem);
+
+            return list;
+        }
+        public async Task CreateAsync(PizzaViewModel model, IFormFile imageFile)
+        {
+            var finalPrice = CalculatePizza(model);
+
+            PizzaModel pizza = new PizzaModel();
+
+            pizza.Id = Guid.NewGuid().ToString();
+            pizza.PizzaName = model.PizzaName;
+            pizza.ImageTitle = model.ImageTitle;
+            pizza.TomatoSauce = model.TomatoSauce;
+            pizza.Cheese = model.Cheese;
+            pizza.Peperoni = model.Peperoni;
+            pizza.Mushroom = model.Mushroom;
+            pizza.Ham = model.Ham;
+            pizza.BasePrice = model.BasePrice;
+            pizza.Beef = model.Beef;
+            pizza.Tuna = model.Tuna;
+            pizza.FinalPrice = model.FinalPrice;
+            pizza.Pineapple = model.Pineapple;
+            pizza.Description = model.Description;
+            pizza.ImageUrl = model.ImageUrl;
+            pizza.Price = model.Price;
+            pizza.OrderId = model.OrderId;
+            pizza.CreatedAt = DateTime.Now;
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imageFile.CopyToAsync(memoryStream);
+                    pizza.ImageData = memoryStream.ToArray();
+                }
+            }
+            else
+            {
+                pizza.ImageData = new byte[0];
+            }
+
+
+            await context.Pizza.AddAsync(pizza);
             await context.SaveChangesAsync();
         }
-        public PizzaViewModel UpdateById(string pizzaModelId)
+
+        public async Task DeletePizza(string id)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentException("Invalid ID");
+            }
+
+            var pizza = await context.Pizza
+            .Include(p => p.Order)
+            .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (pizza != null)
+            {
+                context.Pizza.Remove(pizza);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public PizzaViewModel GetDetailsById(string id)
         {
             PizzaViewModel pizza = context.Pizza
+                .Include(pizza => pizza.Order)
                 .Select(pizza => new PizzaViewModel()
                 {
-                    PizzaModelId = pizza.PizzaModelId,
+                    Id = pizza.Id,
                     ImageTitle = pizza.ImageTitle,
                     PizzaName = pizza.PizzaName,
-                    BasePrice = pizza.BasePrice,
                     TomatoSauce = pizza.TomatoSauce,
                     Cheese = pizza.Cheese,
                     Peperoni = pizza.Peperoni,
                     Mushroom = pizza.Mushroom,
+                    Ham = pizza.Ham,
+                    BasePrice = pizza.BasePrice,
+                    Beef = pizza.Beef,
                     Tuna = pizza.Tuna,
                     Pineapple = pizza.Pineapple,
-                    Ham = pizza.Ham,
-                    Beef = pizza.Beef,
                     FinalPrice = pizza.FinalPrice,
-                    PizzaSize = pizza.PizzaSize,
-                    WeightOption = pizza.WeightOption
-                }).SingleOrDefault(pizza => pizza.PizzaModelId == pizzaModelId);
+                    ImageUrl = pizza.ImageUrl,
+                    Description = pizza.Description,
+                    Price = pizza.Price,
+                    Order = pizza.Order,
+                    OrderId = pizza.OrderId
+                }).SingleOrDefault(pizza => pizza.Id == id);
             return pizza;
         }
-        public float CalculateCustomPizza(PizzaViewModel pizza, WeightOptionViewModel weight)
+
+        public async Task UpdateAsync(PizzaViewModel model, IFormFile imageFile)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model), "Invalid pizza model");
+            }
+
+            var pizza = await context.Pizza
+                .FirstOrDefaultAsync(p => p.Id == model.Id);
+
+            if (pizza == null)
+            {
+                throw new ArgumentException("Pizza not found");
+            }
+
+            pizza.PizzaName = model.PizzaName;
+            pizza.TomatoSauce = model.TomatoSauce;
+            pizza.Cheese = model.Cheese;
+            pizza.Peperoni = model.Peperoni;
+            pizza.Mushroom = model.Mushroom;
+            pizza.Ham = model.Ham;
+            pizza.BasePrice = model.BasePrice;
+            pizza.Beef = model.Beef;
+            pizza.Tuna = model.Tuna;
+            pizza.Pineapple = model.Pineapple;
+            pizza.FinalPrice = model.FinalPrice;
+            pizza.Price = model.Price;
+            pizza.ImageUrl = model.ImageUrl;
+            pizza.Description = model.Description;
+            pizza.ImageData = model.ImageData;
+            pizza.Order = model.Order;
+            pizza.OrderId = model.OrderId;
+            pizza.ModifiedAt = DateTime.Now;
+
+            if (model.ImageFile != null && model.ImageFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await model.ImageFile.CopyToAsync(memoryStream);
+                    model.ImageData = memoryStream.ToArray();
+                }
+            }
+
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<PizzaViewModel> UpdateById(string id)
+        {
+            if (!await PizzaExists(id))
+            {
+                throw new ArgumentNullException(nameof(id), "Pizza not found");
+            }
+            PizzaViewModel pizza = await context.Pizza
+            .Include(o => o.Order)
+            .Where(p => p.Id == id)
+            .Select(p => new PizzaViewModel
+            {
+                Id = p.Id,
+                ImageTitle = p.ImageTitle,
+                PizzaName = p.PizzaName,
+                TomatoSauce = p.TomatoSauce,
+                Cheese = p.Cheese,
+                Peperoni = p.Peperoni,
+                Mushroom = p.Mushroom,
+                Ham = p.Ham,
+                BasePrice = p.BasePrice,
+                Beef = p.Beef,
+                Tuna = p.Tuna,
+                Pineapple = p.Pineapple,
+                FinalPrice = p.FinalPrice,
+                Description = p.Description,
+                ImageUrl = p.ImageUrl,
+                Price = p.Price,
+                Order = p.Order,
+                OrderId = p.OrderId
+            }).SingleOrDefaultAsync();
+
+            if (pizza.ImageFile != null && pizza.ImageFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await pizza.ImageFile.CopyToAsync(memoryStream);
+                    pizza.ImageData = memoryStream.ToArray();
+                }
+            }
+
+            return pizza;
+        }
+
+        public async Task<bool> PizzaExists(string id)
+        {
+            return await context.Pizza.AnyAsync(p => p.Id == id);
+        }
+
+        public float CalculatePizza(PizzaViewModel pizza)
         {
             pizza.FinalPrice = pizza.BasePrice;
 
@@ -171,36 +285,14 @@ namespace OnlinePizzeria.Services
             {
                 pizza.FinalPrice += 2.5f;
             }
-            switch (pizza.PizzaSize.Size)
-            {
-                case PizzaSize.SizeType.Small:
-                    return pizza.FinalPrice + 1f;
-                case PizzaSize.SizeType.Medium:
-                    return pizza.FinalPrice + 1.5f;
-                case PizzaSize.SizeType.Large:
-                    return pizza.FinalPrice + 2.0f;
-            }
 
-            switch(pizza.WeightOption.Products)
-            {
-                case WeightOption.Product.TomatoWeight:
-                    return pizza.FinalPrice;
-                case WeightOption.Product.HamWeight:
-                    return pizza.FinalPrice + 0.25f;
-                case WeightOption.Product.BeefWeight:
-                    return pizza.FinalPrice + 0.5f;
-                case WeightOption.Product.CheeseWeight:
-                    return pizza.FinalPrice + 0.75f;
-                case WeightOption.Product.MushroomWeight:
-                    return pizza.FinalPrice + 1f;
-                case WeightOption.Product.TunaWeight:
-                    return pizza.FinalPrice + 2f;
-            }
-            return pizza.FinalPrice; 
+            pizza.Price = pizza.FinalPrice;
 
+            return pizza.FinalPrice;
         }
-
     }
 }
+
+
 
 

@@ -1,0 +1,54 @@
+﻿@model CustomerViewModel
+@{
+    ViewData["Title"] = "Details for customer";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Details</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="FirstName" class="form-label">First name:</label>
+                        <input asp-for="FirstName" class="form-control" pattern="[A-Za-z]+" readonly />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="LastName" class="form-label">Last name:</label>
+                        <input asp-for="LastName" class="form-control" pattern="[A-Za-z]+" readonly />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label">Address:</label>
+                        <input asp-for="Address" class="form-control" readonly />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label">Phone number:</label>
+                        <input asp-for="PhoneNumber" class="form-control" pattern="^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$" readonly />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email:</label>
+                        <input asp-for="Email" class="form-control" readonly />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a class="btn btn-outline-success float-end" asp-action="UpdateCustomer" asp-route-id="@Model.Id">Update</a>
+                            <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

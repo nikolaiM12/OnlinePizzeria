@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using OnlinePizzeria.Data;
 using OnlinePizzeria.Model;
 using OnlinePizzeria.Services.Interfaces;
@@ -9,100 +10,201 @@ namespace OnlinePizzeria.Services
     public class CreditCardPaymentService : ICreditCardPaymentService
     {
         private readonly ApplicationDbContext context;
+        private readonly CustomerService customerService;
+        private readonly OrderService orderService;
+
         public CreditCardPaymentService(ApplicationDbContext post)
         {
             context = post;
+            customerService = new CustomerService(context);
+            orderService = new OrderService(context);
         }
+
         public List<CreditCardPaymentViewModel> GetAll()
         {
-            return context.OnlinePayment.Select(payment => new CreditCardPaymentViewModel()
+            return context.OnlinePayment
+                .Include(payment => payment.Order)
+                .Include(payment => payment.Customer)
+                .Select(payment => new CreditCardPaymentViewModel()
+                {
+                    Id = payment.Id,
+                    CardNumber = payment.CardNumber,
+                    ExpirationDate = payment.ExpirationDate,
+                    CVV = payment.CVV,
+                    Amount = payment.Amount,
+                    Order = payment.Order,
+                    OrderId = payment.OrderId,
+                    Customer = payment.Customer,
+                    CustomerId = payment.CustomerId
+                }).ToList();
+        }
+        public List<SelectListItem> GetCustomers()
+        {
+            var list = new List<SelectListItem>();
+
+            List<CustomerViewModel> customers = customerService.GetAll();
+            list = customers.Select(customer => new SelectListItem()
             {
-                CardNumber = payment.CardNumber,
-                ExpirationDate = payment.ExpirationDate,
-                CVV = payment.CVV,
-                Amount = payment.Amount,
-                Customer = payment.Customer,
-                Order = payment.Order,
+                Value = customer.Id,
+                Text = $"{customer.FirstName} {customer.LastName}"
             }).ToList();
+
+            var defaultItem = new SelectListItem()
+            {
+                Value = null,
+                Text = "---Select a Customer---"
+            };
+
+            list.Insert(0, defaultItem);
+
+            return list;
+        }
+
+        public List<SelectListItem> GetOrders()
+        {
+            var list = new List<SelectListItem>();
+
+            List<OrderViewModel> orders = orderService.GetAll();
+            list = orders.Select(order => new SelectListItem()
+            {
+                Value = order.Id,
+                Text = order.Address
+            }).ToList();
+
+            var defaultItem = new SelectListItem()
+            {
+                Value = null,
+                Text = "---Select a Order Address---"
+            };
+
+            list.Insert(0, defaultItem);
+
+            return list;
         }
         public async Task CreateAsync(CreditCardPaymentViewModel model)
         {
-            CreditCardPayment creditCardPayment = new CreditCardPayment();
-
-            creditCardPayment.CreditCardPaymentId = Guid.NewGuid().ToString();
-            creditCardPayment.CardNumber = model.CardNumber;
-            creditCardPayment.ExpirationDate = model.ExpirationDate;
-            creditCardPayment.CVV = model.CVV;
-            creditCardPayment.Amount = model.Amount;
-            creditCardPayment.Customer = model.Customer; 
-            creditCardPayment.Order = model.Order;
-            
-            await context.OnlinePayment.AddAsync(creditCardPayment);
-            await context.SaveChangesAsync();
-        }
-        public async Task DeletePayment(string creditCardPaymentId)
-        {
-            if (string.IsNullOrEmpty(creditCardPaymentId) || string.IsNullOrWhiteSpace(creditCardPaymentId))
+            if (model.CustomerId == "")
             {
-                Console.WriteLine("Eror!");
             }
-            if (creditCardPaymentId != null)
+            if (model.OrderId == "")
             {
-                var onlinepaymentDb = context.OnlinePayment.FirstOrDefault(x => x.CreditCardPaymentId == creditCardPaymentId);
-                context.OnlinePayment.Remove(onlinepaymentDb);
+            }
+            else
+            {
+                CreditCardPayment payment = new()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    CardNumber = model.CardNumber,
+                    CVV = model.CVV,
+                    Amount = model.Amount,
+                    ExpirationDate = model.ExpirationDate,
+                    CustomerId = model.CustomerId,
+                    OrderId = model.OrderId,
+                    CreatedAt = DateTime.Now
+                };
+
+                await context.OnlinePayment.AddAsync(payment);
                 await context.SaveChangesAsync();
             }
-            
-        }
-        public CreditCardPaymentViewModel FindById(string creditCardPaymentId)
-        {
-            CreditCardPaymentViewModel creditCardPayment = context.OnlinePayment
-                .Select(creditCardPayment => new CreditCardPaymentViewModel()
-                {
-                    CreditCardPaymentId = creditCardPayment.CreditCardPaymentId,
-                    CardNumber = creditCardPayment.CardNumber,
-                    ExpirationDate = creditCardPayment.ExpirationDate,
-                    CVV = creditCardPayment.CVV,
-                    Amount = creditCardPayment.Amount,
-                    Customer = creditCardPayment.Customer,
-                    Order = creditCardPayment.Order
-                }).SingleOrDefault(creditCardPayment => creditCardPayment.CreditCardPaymentId == creditCardPaymentId);
-            return creditCardPayment;
-        }
-    
-        public async Task UpdateAsync(CreditCardPaymentViewModel model)
-        {
-            CreditCardPayment? creditCardPayment = context.OnlinePayment.Find(model.CreditCardPaymentId);
 
-            if(creditCardPayment == null)
+        }
+
+        public async Task DeletePayment(string id)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id))
             {
-                return;
+                throw new ArgumentException("Invalid ID");
             }
 
-            creditCardPayment.CardNumber = model.CardNumber;
-            creditCardPayment.ExpirationDate = model.ExpirationDate;
-            creditCardPayment.CVV = model.CVV;
-            creditCardPayment.Amount = model.Amount;
-            creditCardPayment.Customer = model.Customer;
-            creditCardPayment.Order = model.Order;
+            var payment = await context.OnlinePayment
+            .Include(o => o.Customer)
+            .Include(o => o.Order)
+            .FirstOrDefaultAsync(o => o.Id == id);
 
-            context.OnlinePayment.Update(creditCardPayment);
+            if (payment != null)
+            {
+                context.OnlinePayment.Remove(payment);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public CreditCardPaymentViewModel GetDetailsById(string id)
+        {
+            return context.OnlinePayment
+            .Include(c => c.Customer)
+            .Include(o => o.Order)
+            .Select(payment => new CreditCardPaymentViewModel
+            {
+                Id = payment.Id,
+                CardNumber = payment.CardNumber,
+                Amount = payment.Amount,
+                ExpirationDate = payment.ExpirationDate,
+                CVV = payment.CVV,
+                CustomerId = payment.CustomerId,
+                OrderId = payment.OrderId,
+                Customer = payment.Customer,
+                Order = payment.Order
+            })
+            .SingleOrDefault(payment => payment.Id == id);
+        }
+
+        public async Task UpdateAsync(CreditCardPaymentViewModel model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model), "Invalid payment model");
+            }
+
+            var payment = await context.OnlinePayment
+                .FirstOrDefaultAsync(o => o.Id == model.Id);
+
+            if (payment == null)
+            {
+                throw new ArgumentException("Payment not found");
+            }
+
+            payment.CardNumber = model.CardNumber;
+            payment.CVV = model.CVV;
+            payment.ExpirationDate = model.ExpirationDate;
+            payment.Amount = model.Amount;
+            payment.Customer = model.Customer;
+            payment.CustomerId = model.CustomerId;
+            payment.Order = model.Order;
+            payment.OrderId = model.OrderId;
+            payment.ModifiedAt = DateTime.Now;
+
             await context.SaveChangesAsync();
         }
-        public CreditCardPaymentViewModel UpdateById(string creditCardPaymentId) 
+
+        public async Task<CreditCardPaymentViewModel> UpdateById(string id)
         {
-            CreditCardPaymentViewModel card = context.OnlinePayment
-                .Select(card => new CreditCardPaymentViewModel()
-                {
-                    CreditCardPaymentId = card.CreditCardPaymentId,
-                    CardNumber = card.CardNumber,
-                    ExpirationDate = card.ExpirationDate,
-                    CVV = card.CVV,
-                    Amount = card.Amount,
-                    Customer = card.Customer,
-                    Order = card.Order,
-                }).SingleOrDefault(c => c.CreditCardPaymentId == creditCardPaymentId);
-            return card; 
+            var payment = await context.OnlinePayment
+            .Include(o => o.Customer)
+            .Include(o => o.Order)
+            .SingleOrDefaultAsync(o => o.Id == id);
+
+            if (payment == null)
+            {
+                throw new ArgumentException("Payment not found");
+            }
+
+            return new CreditCardPaymentViewModel
+            {
+                Id = payment.Id,
+                CardNumber = payment.CardNumber,
+                CVV = payment.CVV,
+                ExpirationDate = payment.ExpirationDate,
+                Amount = payment.Amount,
+                Order = payment.Order,
+                OrderId = payment.OrderId,
+                Customer = payment.Customer,
+                CustomerId = payment.CustomerId
+            };
+        }
+        public async Task<bool> PaymentExists(string id)
+        {
+            return await context.OnlinePayment.AnyAsync(p => p.Id == id);
         }
     }
 }
+

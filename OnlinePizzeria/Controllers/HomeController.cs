@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlinePizzeria.Models;
 using System.Diagnostics;
 
@@ -13,11 +14,13 @@ namespace OnlinePizzeria.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "User")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Privacy()
         {
             return View();
@@ -27,6 +30,11 @@ namespace OnlinePizzeria.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        [Authorize(Roles = "User")]
+        public IActionResult Contact()
+        {
+            return View();
         }
     }
 }

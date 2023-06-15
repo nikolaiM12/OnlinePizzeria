@@ -4,11 +4,12 @@ namespace OnlinePizzeria.Services.Interfaces
 {
     public interface ICustomerService
     {
-        Task <ICollection<CustomerViewModel>> GetAll();
+        List<CustomerViewModel> GetAll();
         Task CreateAsync(CustomerViewModel model);
-        Task DeleteCustomer(string customerId);
-        CustomerViewModel GetDetailsById(string customerId);
+        Task DeleteCustomer(string id);
+        CustomerViewModel GetDetailsById(string id);
         Task UpdateAsync(CustomerViewModel model);
-        CustomerViewModel UpdateById(string customerId);
+        Task<CustomerViewModel> UpdateById(string id);
+        Task<bool> CustomerExists(string id);
     }
 }

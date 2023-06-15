@@ -1,17 +1,16 @@
-﻿using OnlinePizzeria.Data.DataModels;
+﻿using OnlinePizzeria.Data.DataModels.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OnlinePizzeria.Model
 {
-    public class PizzaModel
+    public class PizzaModel : BaseClass
     {
-        [Key]
-        public string? PizzaModelId { get; set; }
         public string ImageTitle { get; set; }
         public string PizzaName { get; set; }
         public float BasePrice { get; set; }
@@ -24,8 +23,11 @@ namespace OnlinePizzeria.Model
         public bool Ham { get; set; }
         public bool Beef { get; set; }
         public float FinalPrice { get; set; }
-        public virtual PizzaSize PizzaSize { get; set; }
-        public virtual WeightOption WeightOption { get; set; }
-
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
+        public byte[] ImageData { get; set; }
+        public float Price { get; set; }
+        public Order Order { get; set; }
+        public string OrderId { get; set; }
     }
 }

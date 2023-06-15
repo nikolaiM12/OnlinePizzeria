@@ -1,0 +1,42 @@
+﻿@using OnlinePizzeria.Data.DataModels;
+@model User
+
+@{
+    ViewData["Title"] = "Delete User";
+}
+
+<div class="container">
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-primary text-white py-3">
+            <h2 class="text-center">Delete User</h2>
+        </div>
+        <div class="card-body">
+            <h4 class="text-center">Are you sure you want to delete this user?</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-3 text-md-end">
+                    User ID:
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
+                <dt class="col-sm-3 text-md-end">
+                    Email:
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+            </dl>
+
+            <form asp-action="DeleteConfirmed" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="mb-3">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <input type="submit" value="Delete" class="btn btn-outline-danger" />
+                        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

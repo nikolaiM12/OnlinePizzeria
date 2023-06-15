@@ -1,12 +1,11 @@
-﻿using OnlinePizzeria.Data.DataModels;
-using OnlinePizzeria.Model;
+﻿using OnlinePizzeria.Model;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlinePizzeria.Services.ViewModels
 {
     public class PizzaViewModel
     {
-        public string? PizzaModelId { get; set; }
+        public string Id { get; set; }
         public string ImageTitle { get; set; }
         public string PizzaName { get; set; }
         public float BasePrice { get; set; }
@@ -19,9 +18,14 @@ namespace OnlinePizzeria.Services.ViewModels
         public bool Ham { get; set; }
         public bool Beef { get; set; }
         public float FinalPrice { get; set; }
-        public virtual PizzaSize PizzaSize { get; set; }
-        public virtual WeightOption WeightOption { get; set; }
-        
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
+        [Display(Name = "Image File")]
+        public IFormFile ImageFile { get; set; }
+        public byte[] ImageData { get; set; }
+        public float Price { get; set; }
+        public Order Order { get; set; }
+        public string OrderId { get; set; }
     }
 }
 

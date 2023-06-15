@@ -1,9 +1,77 @@
-﻿@using OnlinePizzeria.Controllers 
-@{
-    ViewData["Title"] = "Home page";
+﻿@{
+    ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-4 animate__animated animate__fadeIn">Welcome to Online Pizzeria</h1>
+            <p class="lead mb-4 animate__animated animate__fadeIn">Order delicious pizzas online!</p>
+            <p class="mb-4 animate__animated animate__fadeIn">Explore our menu and choose from a variety of mouth-watering pizzas.</p>
+            <p class="mb-4 animate__animated animate__fadeIn">Place your order and enjoy the convenience of home delivery.</p>
+            <p class="mb-4 animate__animated animate__fadeIn">Start your pizza adventure today!</p>
+            <a href="@Url.Action("Index", "PizzaModel")" class="btn btn-outline-primary animate__animated animate__fadeIn">View Menu</a>
+            <a href="@Url.Action("Contact", "Home")" class="btn btn-outline-secondary animate__animated animate__fadeIn">Contact Us</a>
+            <a href="@Url.Action("Privacy", "Home")" class="btn btn-outline-info animate__animated animate__fadeIn">Privacy Policy</a>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-4 animate__animated animate__fadeIn">
+            <h2 class="mb-3">Why Choose Us?</h2>
+            <ul class="list-group">
+                <li class="list-group-item">Wide selection of pizzas</li>
+                <li class="list-group-item">Fresh and quality ingredients</li>
+                <li class="list-group-item">Quick and reliable delivery</li>
+                <li class="list-group-item">Friendly customer service</li>
+            </ul>
+        </div>
+        <div class="col-md-4 animate__animated animate__fadeIn">
+            <h2 class="mb-3">Customer Testimonials</h2>
+            <div class="card">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eu fringilla risus.</p>
+                        <footer class="blockquote-footer">John Doe</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 animate__animated animate__fadeIn">
+            <h2 class="mb-3">Opening Hours</h2>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th scope="row">Monday</th>
+                        <td>10:00 AM - 9:00 PM</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Tuesday</th>
+                        <td>10:00 AM - 9:00 PM</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Wednesday</th>
+                        <td>10:00 AM - 9:00 PM</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Thursday</th>
+                        <td>10:00 AM - 9:00 PM</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Friday</th>
+                        <td>10:00 AM - 10:00 PM</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Saturday</th>
+                        <td>11:00 AM - 10:00 PM</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Sunday</th>
+                        <td>11:00 AM - 9:00 PM</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
