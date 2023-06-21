@@ -51,10 +51,11 @@ namespace OnlinePizzeria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrder(OrderViewModel order)
         {
-            if (ModelState.IsValid)
+            if (order == null)
             {
-                return View(order);
+                return BadRequest("Invalid order data");
             }
+
             TempData["success"] = "Order added successfully";
             await orderService.CreateAsync(order);
             return RedirectToAction(nameof(Index));
@@ -99,24 +100,23 @@ namespace OnlinePizzeria.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> UpdateOrder(OrderViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                bool orderExists = await OrderExists(model.Id!);
+            bool orderExists = await OrderExists(model.Id!);
 
-                if (orderExists)
-                {
-                    TempData["success"] = "Order updated successfully";
-                    await orderService.UpdateAsync(model);
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Order not found");
-                }
+            if (orderExists)
+            {
+               TempData["success"] = "Order updated successfully";
+               await orderService.UpdateAsync(model);
+               return RedirectToAction(nameof(Index));
+            }
+
+            else
+            {
+               ModelState.AddModelError(string.Empty, "Order not found");
             }
 
             return View(model);
         }
+        
         private async Task<bool> OrderExists(string id)
         {
             return await orderService.OrderExists(id);
