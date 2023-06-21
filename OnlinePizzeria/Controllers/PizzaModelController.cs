@@ -47,28 +47,35 @@ namespace OnlinePizzeria.Controllers
             return View();
         }
 
-        [HttpPost]
+         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPizza(PizzaViewModel pizza, IFormFile imageFile)
         {
-            if (!ModelState.IsValid)
+            if (pizza == null)
             {
-                float price = pizzaService.CalculatePizza(pizza);
-                pizza.Price = price;
+                return BadRequest("Invalid pizza data");
+            }
 
-                if (imageFile != null && imageFile.Length > 0)
+            float price = pizzaService.CalculatePizza(pizza);
+            pizza.Price = price;
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
                 {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await imageFile.CopyToAsync(memoryStream);
-                        pizza.ImageData = memoryStream.ToArray();
-                    }
+                    await imageFile.CopyToAsync(memoryStream);
+                    pizza.ImageData = memoryStream.ToArray();
                 }
 
+                ViewBag.Orders = pizzaService.GetOrders();
                 await pizzaService.CreateAsync(pizza, imageFile);
                 TempData["success"] = "Pizza added successfully";
-
                 return RedirectToAction(nameof(Index));
+            }
+
+            else
+            {
+                ModelState.AddModelError(string.Empty, "No image file provided");
             }
 
             return View(pizza);
@@ -116,23 +123,24 @@ namespace OnlinePizzeria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdatePizza(PizzaViewModel model, IFormFile imageFile)
         {
-            if (!ModelState.IsValid)
+            float price = pizzaService.CalculatePizza(model);
+            model.Price = price;
+
+            if (imageFile != null && imageFile.Length > 0)
             {
-                float price = pizzaService.CalculatePizza(model);
-                model.Price = price;
-
-                if (imageFile != null && imageFile.Length > 0)
+                using (var memoryStream = new MemoryStream())
                 {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await imageFile.CopyToAsync(memoryStream);
-                        model.ImageData = memoryStream.ToArray();
-                    }
+                    await imageFile.CopyToAsync(memoryStream);
+                    model.ImageData = memoryStream.ToArray();
                 }
-
                 await pizzaService.UpdateAsync(model, imageFile);
                 TempData["success"] = "Pizza updated successfully";
                 return RedirectToAction(nameof(Index));
+            }
+
+            else
+            {
+                ModelState.AddModelError(string.Empty, "No image file provided");
             }
 
             return View(model);
