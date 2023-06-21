@@ -46,10 +46,11 @@ namespace OnlinePizzeria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPayment(CreditCardPaymentViewModel payment)
         {
-            if (ModelState.IsValid)
+            if(payment == null)
             {
-                return View(payment);
+                return BadRequest("Invalid payment data");
             }
+
             TempData["success"] = "Payment added successfully";
             await paymentService.CreateAsync(payment);
             return RedirectToAction(nameof(Index));
@@ -93,24 +94,22 @@ namespace OnlinePizzeria.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> UpdatePayment(CreditCardPaymentViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                bool paymentExists = await PaymentExists(model.Id!);
+            bool paymentExists = await PaymentExists(model.Id!);
 
-                if (paymentExists)
-                {
-                    TempData["success"] = "Payment updated successfully";
-                    await paymentService.UpdateAsync(model);
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Payment not found");
-                }
+            if (paymentExists)
+            {
+                TempData["success"] = "Payment updated successfully";
+                await paymentService.UpdateAsync(model);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Payment not found");
             }
 
             return View(model);
         }
+	
         private async Task<bool> PaymentExists(string id)
         {
             return await paymentService.PaymentExists(id);
