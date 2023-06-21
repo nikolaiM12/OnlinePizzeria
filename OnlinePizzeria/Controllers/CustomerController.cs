@@ -39,18 +39,21 @@ namespace OnlinePizzeria.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCustomer(CustomerViewModel customer)
         {
-            if (ModelState.IsValid)
+            if (customer == null)
             {
-                return View(customer);
+                return BadRequest("Invalid customer data");
             }
+
             TempData["success"] = "Customer added successfully";
             await customerService.CreateAsync(customer);
             return RedirectToAction(nameof(Index));
         }
+        
         [HttpGet]
         public IActionResult DeleteCustomer()
         {
@@ -88,23 +91,22 @@ namespace OnlinePizzeria.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> UpdateCustomer(CustomerViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                bool customerExists = await CustomerExists(model.Id!);
+            bool customerExists = await CustomerExists(model.Id!);
 
-                if (customerExists)
-                {
-                    TempData["success"] = "Customer updated successfully";
-                    await customerService.UpdateAsync(model);
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Customer not found");
-                }
+            if (customerExists)
+            {
+                TempData["success"] = "Customer updated successfully";
+                await customerService.UpdateAsync(model);
+                return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Customer not found");
+            }
+
             return View(model);
         }
+        
         private async Task<bool> CustomerExists(string id)
         {
             return await customerService.CustomerExists(id);
