@@ -45,17 +45,17 @@ namespace OnlinePizzeria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCustomPizza(CustomPizzaViewModel pizza)
         {
-            if (!ModelState.IsValid)
+            if (pizza == null)
             {
-                float price = customPizzaService.CalculatePizza(pizza);
-                pizza.Price = price;
-                await customPizzaService.CreateAsync(pizza);
-                TempData["success"] = "Custom pizza added successfully";
-
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid custom pizza data");
             }
+            
+            float price = customPizzaService.CalculatePizza(pizza);
+            pizza.Price = price;
+            await customPizzaService.CreateAsync(pizza);
+            TempData["success"] = "Custom pizza added successfully";
 
-            return View(pizza);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -96,23 +96,19 @@ namespace OnlinePizzeria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateCustomPizza(CustomPizzaViewModel model)
         {
-            if (!ModelState.IsValid)
+            bool customPizzaExists = await CustomPizzaExists(model.Id!);
+
+            if (customPizzaExists)
             {
-                bool customPizzaExists = await CustomPizzaExists(model.Id!);
-
-                if (customPizzaExists)
-                {
-                    float price = customPizzaService.CalculatePizza(model);
-                    model.Price = price;
-
-                    await customPizzaService.UpdateAsync(model);
-                    TempData["success"] = "Custom pizza updated successfully";
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Custom pizza not found");
-                }
+                float price = customPizzaService.CalculatePizza(model);
+                model.Price = price;
+                await customPizzaService.UpdateAsync(model);
+                TempData["success"] = "Custom pizza updated successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Custom pizza not found");
             }
 
             return View(model);
