@@ -39,20 +39,21 @@ namespace OnlinePizzeria.Controllers
         {
             return View();
         }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddProvider(ProviderViewModel provider)
         {
-            if (ModelState.IsValid)
+            if (provider == null)
             {
-                return View(provider);
+                return BadRequest("Invalid provider data");
             }
 
             TempData["success"] = "Provider added successfully";
             await providerService.CreateAsync(provider);
             return RedirectToAction(nameof(Index));
         }
-
+	
         [HttpGet]
         public IActionResult DeleteProvider()
         {
@@ -89,23 +90,23 @@ namespace OnlinePizzeria.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> UpdateProvider(ProviderViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                bool providerExists = await ProviderExists(model.Id!);
+            bool providerExists = await ProviderExists(model.Id!);
 
-                if (providerExists)
-                {
-                    TempData["success"] = "Provider updated successfully";
-                    await providerService.UpdateAsync(model);
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Provider not found");
-                }
+            if (providerExists)
+            {
+                TempData["success"] = "Provider updated successfully";
+                await providerService.UpdateAsync(model);
+                return RedirectToAction(nameof(Index));
             }
+
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Provider not found");
+            }
+
             return View(model);
         }
+	
         private async Task<bool> ProviderExists(string id)
         {
             return await providerService.ProviderExists(id);
