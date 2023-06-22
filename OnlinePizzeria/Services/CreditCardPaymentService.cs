@@ -83,30 +83,19 @@ namespace OnlinePizzeria.Services
         }
         public async Task CreateAsync(CreditCardPaymentViewModel model)
         {
-            if (model.CustomerId == "")
-            {
-            }
-            if (model.OrderId == "")
-            {
-            }
-            else
-            {
-                CreditCardPayment payment = new()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    CardNumber = model.CardNumber,
-                    CVV = model.CVV,
-                    Amount = model.Amount,
-                    ExpirationDate = model.ExpirationDate,
-                    CustomerId = model.CustomerId,
-                    OrderId = model.OrderId,
-                    CreatedAt = DateTime.Now
-                };
+            CreditCardPayment payment = new CreditCardPayment();
+            payment.Id = Guid.NewGuid().ToString();
+            payment.CardNumber = model.CardNumber;
+            payment.Amount = model.Amount;
+            payment.CVV = model.CVV;
+            payment.ExpirationDate = model.ExpirationDate;
+            payment.CustomerId = model.CustomerId;
+            payment.Customer = model.Customer;
+            payment.Order = model.Order;
+            payment.OrderId = model.OrderId;
 
-                await context.OnlinePayment.AddAsync(payment);
-                await context.SaveChangesAsync();
-            }
-
+            await context.OnlinePayment.AddAsync(payment);
+            await context.SaveChangesAsync();
         }
 
         public async Task DeletePayment(string id)
